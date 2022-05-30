@@ -1,6 +1,7 @@
 package com.tqs.project.repository;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import com.tqs.project.Model.BusinessCourierInteractionsEventType;
@@ -20,7 +21,6 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
@@ -62,8 +62,37 @@ public class BusinessCourierInteractionsEventTypeRepositoryTest {
         assertThat(res).isPresent().contains(x);
     }
 
+    @Test
+    void testWhenFindByInvalidId_thenReturnNull() {
+        Optional<BusinessCourierInteractionsEventType> res = rep.findById(-1L);
+        assertThat(res).isNotPresent();
+    }
     /* ------------------------------------------------- *
      * FIND TESTS                                  *
      * ------------------------------------------------- *
      */
+
+    @Test
+    void testGivenBusinessCourierInteractionsEventTypeAndFindByAll_thenReturnSameBusinessCourierInteractionsEventType() {
+        BusinessCourierInteractionsEventType  b1 = new BusinessCourierInteractionsEventType();
+        BusinessCourierInteractionsEventType  b2 = new BusinessCourierInteractionsEventType();
+        
+        entityManager.persistAndFlush(b1);
+        entityManager.persistAndFlush(b2);
+
+
+        List<BusinessCourierInteractionsEventType> all = rep.findAll();
+
+        assertThat(all).isNotNull();
+        assertThat(all)
+                .hasSize(2)
+                .extracting(BusinessCourierInteractionsEventType::getId)
+                .contains(b1.getId(), b2.getId());
+    }
+
+    @Test
+    void testGivenNoBusinessCourierInteractionsEventType_whenFindAll_thenReturnEmpty() {
+        List<BusinessCourierInteractionsEventType> all = rep.findAll();
+        assertThat(all).isNotNull().isEmpty();
+    }
 }
