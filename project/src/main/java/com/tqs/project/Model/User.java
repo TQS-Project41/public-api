@@ -45,7 +45,7 @@ public class User {
     @NotNull(message = "Username é obrigatório")
     private String username;
 
-    private static int counter =0;
+    private  int counter =0;
 
     public User() {
     }
