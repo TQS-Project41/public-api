@@ -182,6 +182,24 @@
 		<version>${testcontainers.version}</version>
 		<scope>test</scope>
 		</dependency>
+		<dependency>
+            <groupId>com.github.docker-java</groupId>
+            <artifactId>docker-java-api</artifactId>
+            <version>3.2.8</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.docker-java</groupId>
+            <artifactId>docker-java-transport-zerodep</artifactId>
+            <version>3.2.8</version>
+            <scope>test</scope>
+        </dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>mysql</artifactId>
+			<version>1.17.2</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

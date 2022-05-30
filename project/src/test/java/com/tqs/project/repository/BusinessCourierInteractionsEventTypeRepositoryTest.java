@@ -19,20 +19,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
+import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DataJpaTest
 @Testcontainers
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class BusinessCourierInteractionsEventTypeRepositoryTest {
 
     @Container
-    public static PostgreSQLContainer container = new PostgreSQLContainer()
-        .withUsername("test")
-        .withPassword("test")
-        .withDatabaseName("test");
+    public static MySQLContainer container = new MySQLContainer()
+        .withUsername("user")
+        .withPassword("user")
+        .withDatabaseName("tqs_41");
 
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {
