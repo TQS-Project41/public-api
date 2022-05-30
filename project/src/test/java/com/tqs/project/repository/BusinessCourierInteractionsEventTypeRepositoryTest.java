@@ -74,8 +74,8 @@ public class BusinessCourierInteractionsEventTypeRepositoryTest {
 
     @Test
     void testGivenBusinessCourierInteractionsEventTypeAndFindByAll_thenReturnSameBusinessCourierInteractionsEventType() {
-        BusinessCourierInteractionsEventType  b1 = new BusinessCourierInteractionsEventType();
-        BusinessCourierInteractionsEventType  b2 = new BusinessCourierInteractionsEventType();
+        BusinessCourierInteractionsEventType  b1 = new BusinessCourierInteractionsEventType(BusinessCourierInteractionsEventTypeEnum.ACCEPT);
+        BusinessCourierInteractionsEventType  b2 = new BusinessCourierInteractionsEventType(BusinessCourierInteractionsEventTypeEnum.ACCEPT);
         
         entityManager.persistAndFlush(b1);
         entityManager.persistAndFlush(b2);
