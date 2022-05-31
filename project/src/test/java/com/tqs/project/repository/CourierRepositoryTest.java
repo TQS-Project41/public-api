@@ -1,16 +1,16 @@
-
 package com.tqs.project.repository;
-
-
 
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.PersistenceException;
 import javax.validation.ConstraintViolationException;
 
 import com.tqs.project.Model.BusinessCourierInteractionsEventType;
 import com.tqs.project.Model.BusinessCourierInteractionsEventTypeEnum;
+import com.tqs.project.Model.Courier;
 import com.tqs.project.Model.User;
+import com.tqs.project.Repository.CourierRepository;
 import com.tqs.project.Repository.UserRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
@@ -29,8 +29,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @DataJpaTest
 @Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class UserRepositoryTest {
-
+public class CourierRepositoryTest {
+    
     @Container
     public static MySQLContainer container = new MySQLContainer()
         .withUsername("user")
@@ -43,32 +43,34 @@ public class UserRepositoryTest {
         registry.add("spring.datasource.password", container::getPassword);
         registry.add("spring.datasource.username", container::getUsername);
     }
-    @Test
-    void contextLoads(){
-        System.out.println("Context Loads!");
-    }
 
     @Autowired
-    private UserRepository rep;
+    private CourierRepository rep;
+
+    @Autowired
+    private UserRepository repUser;
 
     @Autowired
     private TestEntityManager entityManager;
     
     @Test
-    void testWhenCreateUserAndFindById_thenReturnSameUser() {
-        User x = new User();
-        x.setPassword("xxxx");
-        x.setUsername("username");
-
+    void testWhenCreateCourierAndFindById_thenReturnSameCourier() {
+        Courier x = new Courier();
+        User user = new User();
+        user.setPassword("xxxx");
+        user.setUsername("username");
+        x.setUser(user);
+        x.setName("SERRAS");
+        repUser.saveAndFlush(user);
         entityManager.persistAndFlush(x);
-        Optional<User> res = rep.findById(x.getId());
+        Optional<Courier> res = rep.findById(x.getId());
         
         assertThat(res).isPresent().contains(x);
     }
 
     @Test
     void testWhenFindByInvalidId_thenReturnNull() {
-        Optional<User> res = rep.findById(-1L);
+        Optional<Courier> res = rep.findById(-1L);
         assertThat(res).isNotPresent();
     }
     /* ------------------------------------------------- *
@@ -77,43 +79,53 @@ public class UserRepositoryTest {
      */
 
     @Test
-    void testGivenUserAndFindByAll_thenReturnSameUser() {
-        User  b1 = new User();
-        User  b2 = new User();
-        b1.setPassword("xxxx");
-        b1.setUsername("username");
-        b2.setPassword("aaa");
-        b2.setUsername("ccc");
-        entityManager.persistAndFlush(b1);
-        entityManager.persistAndFlush(b2);
+    void testGivenCourierAndFindByAll_thenReturnSameCourier() {
+        Courier x = new Courier();
+        User user = new User();
+        user.setPassword("xxxx");
+        user.setUsername("username");
+        x.setUser(user);
+        repUser.saveAndFlush(user);
+        Courier x1 = new Courier();
+        User user1 = new User();
+        x.setName("SERRAS");
+        x1.setName("Alex");
+        user1.setPassword("xxxx");
+        user1.setUsername("aaaa");
+        x1.setUser(user1);
+        repUser.saveAndFlush(user1);
+
+        entityManager.persistAndFlush(x);
+        entityManager.persistAndFlush(x1);
 
 
-        List<User> all = rep.findAll();
+
+        List<Courier> all = rep.findAll();
 
         assertThat(all).isNotNull();
         assertThat(all)
                 .hasSize(2)
-                .extracting(User::getId)
-                .contains(b1.getId(), b2.getId());
+                .extracting(Courier::getId)
+                .contains(x.getId(), x1.getId());
         assertThat(all)
                 .hasSize(2)
-                .extracting(User::getUsername)
-                .contains(b1.getUsername(), b2.getUsername());
+                .extracting(Courier::getName)
+                .contains(x.getName(), x1.getName());
     }
 
     @Test
-    void testGivenNoUser_whenFindAll_thenReturnEmpty() {
-        List<User> all = rep.findAll();
+    void testGivenNoCourier_whenFindAll_thenReturnEmpty() {
+        List<Courier> all = rep.findAll();
         assertThat(all).isNotNull().isEmpty();
     }
 
     @Test
-    void testWhenCreateUser_thenReturnException() {
-        User  x = new User();
-        assertThrows(ConstraintViolationException.class, () -> {
+    void testWhenCreateCourier_thenReturnException() {
+        Courier  x = new Courier();
+        assertThrows(PersistenceException.class, () -> {
             entityManager.persistAndFlush(x);
         });
     }
 
-    
+
 }

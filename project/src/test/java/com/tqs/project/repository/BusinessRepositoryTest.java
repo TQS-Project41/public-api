@@ -1,4 +1,3 @@
-
 package com.tqs.project.repository;
 
 
@@ -6,15 +5,19 @@ package com.tqs.project.repository;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.PersistenceException;
 import javax.validation.ConstraintViolationException;
 
+import com.tqs.project.Model.Business;
 import com.tqs.project.Model.BusinessCourierInteractionsEventType;
 import com.tqs.project.Model.BusinessCourierInteractionsEventTypeEnum;
 import com.tqs.project.Model.User;
+import com.tqs.project.Repository.BusinessRepository;
 import com.tqs.project.Repository.UserRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 
+import org.apache.commons.codec.binary.Base16;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -29,8 +32,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @DataJpaTest
 @Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class UserRepositoryTest {
-
+public class BusinessRepositoryTest {
+    
     @Container
     public static MySQLContainer container = new MySQLContainer()
         .withUsername("user")
@@ -43,32 +46,33 @@ public class UserRepositoryTest {
         registry.add("spring.datasource.password", container::getPassword);
         registry.add("spring.datasource.username", container::getUsername);
     }
-    @Test
-    void contextLoads(){
-        System.out.println("Context Loads!");
-    }
 
     @Autowired
-    private UserRepository rep;
+    private BusinessRepository rep;
+
+    @Autowired
+    private UserRepository repUser;
 
     @Autowired
     private TestEntityManager entityManager;
     
     @Test
-    void testWhenCreateUserAndFindById_thenReturnSameUser() {
-        User x = new User();
-        x.setPassword("xxxx");
-        x.setUsername("username");
-
+    void testWhenCreateBusinessAndFindById_thenReturnSameBusiness() {
+        Business x = new Business();
+        User user = new User();
+        user.setPassword("xxxx");
+        user.setUsername("username");
+        x.setUser(user);
+        repUser.saveAndFlush(user);
         entityManager.persistAndFlush(x);
-        Optional<User> res = rep.findById(x.getId());
+        Optional<Business> res = rep.findById(x.getId());
         
         assertThat(res).isPresent().contains(x);
     }
 
     @Test
     void testWhenFindByInvalidId_thenReturnNull() {
-        Optional<User> res = rep.findById(-1L);
+        Optional<Business> res = rep.findById(-1L);
         assertThat(res).isNotPresent();
     }
     /* ------------------------------------------------- *
@@ -77,43 +81,50 @@ public class UserRepositoryTest {
      */
 
     @Test
-    void testGivenUserAndFindByAll_thenReturnSameUser() {
-        User  b1 = new User();
-        User  b2 = new User();
-        b1.setPassword("xxxx");
-        b1.setUsername("username");
-        b2.setPassword("aaa");
-        b2.setUsername("ccc");
+    void testGivenBusinessAndFindByAll_thenReturnSameBusiness() {
+        
+        Business b1 = new Business();
+        User user = new User();
+        user.setPassword("xxxx");
+        user.setUsername("username");
+        b1.setUser(user);
+        repUser.saveAndFlush(user);
         entityManager.persistAndFlush(b1);
+
+        Business b2 = new Business();
+        User user1 = new User();
+        user1.setPassword("xxxx");
+        user1.setUsername("serras");
+        b2.setUser(user1);
+        repUser.saveAndFlush(user1);
         entityManager.persistAndFlush(b2);
 
-
-        List<User> all = rep.findAll();
+        List<Business> all = rep.findAll();
 
         assertThat(all).isNotNull();
         assertThat(all)
                 .hasSize(2)
-                .extracting(User::getId)
+                .extracting(Business::getId)
                 .contains(b1.getId(), b2.getId());
         assertThat(all)
                 .hasSize(2)
-                .extracting(User::getUsername)
-                .contains(b1.getUsername(), b2.getUsername());
+                .extracting(Business::getUser)
+                .contains(b1.getUser(), b2.getUser());
+        
     }
 
     @Test
-    void testGivenNoUser_whenFindAll_thenReturnEmpty() {
-        List<User> all = rep.findAll();
+    void testGivenNoBusiness_whenFindAll_thenReturnEmpty() {
+        List<Business> all = rep.findAll();
         assertThat(all).isNotNull().isEmpty();
     }
 
     @Test
-    void testWhenCreateUser_thenReturnException() {
-        User  x = new User();
-        assertThrows(ConstraintViolationException.class, () -> {
+    void testWhenCreateBusiness_thenReturnException() {
+        Business  x = new Business();
+        assertThrows(PersistenceException.class, () -> {
             entityManager.persistAndFlush(x);
         });
     }
 
-    
 }

@@ -125,6 +125,16 @@ public class Courier {
         return "Courier [birthdate=" + birthdate + ", name=" + name + ", photo=" + photo + ", user=" + user + "]";
     }
 
+
+    public Long getId() {
+        return id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     
     
 
