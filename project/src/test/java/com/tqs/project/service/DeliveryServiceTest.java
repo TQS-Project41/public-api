@@ -85,16 +85,11 @@ import static org.assertj.core.api.Assertions.assertThat;
         Delivery d2 = new Delivery();
         d2.setId(111L);
 
-        Courier c = new Courier();
-        c.setName("António");
-        d1.setCourier(c);
-        d2.setCourier(c);
-
         List<Delivery> allDeliveries = service.getAllDeliveries();
 
         // verify if FindAllDeliverys is called once
         Mockito.verify(rep, VerificationModeFactory.times(1)).findAll();
 
-        assertThat(allDeliveries).hasSize(2).extracting(Delivery::getCourier).contains(d1.getCourier(), d2.getCourier());
+        assertThat(allDeliveries).hasSize(2).extracting(Delivery::getId).contains(d1.getId(), d2.getId());
     }
  }

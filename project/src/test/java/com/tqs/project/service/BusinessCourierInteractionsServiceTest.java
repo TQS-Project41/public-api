@@ -73,12 +73,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
     @Test
-     void whengetAll_thenReturn4Records() {
+     void whengetAll_thenReturn2Records() {
         BusinessCourierInteractions b1 = new BusinessCourierInteractions();
         b1.setId(111L);
 
         BusinessCourierInteractions b2 = new BusinessCourierInteractions();
-        b1.setId(222L);
+        b2.setId(222L);
 
         List<BusinessCourierInteractions> allBusinessCourierInteractionss = service.getAllBusinessCourierInteractions();
 
