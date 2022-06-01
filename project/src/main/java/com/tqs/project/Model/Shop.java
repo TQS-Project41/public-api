@@ -35,6 +35,15 @@ public class Shop {
       })
     private Address shop_address;
 
+    @OneToMany(mappedBy="shop")
+    private Set<Delivery> delivery;
+    
+      @ManyToOne
+      @JoinColumn(name="business_id", nullable=false)
+      private Business business;
+  
+  
+      
     
     public Shop() {
     }
@@ -104,11 +113,5 @@ public class Shop {
     }
 
 
-    @ManyToOne
-    @JoinColumn(name="business_id", nullable=false)
-    private Business business;
-
-
-    @OneToMany(mappedBy="shop")
-    private Set<Delivery> delivery;
+    
 }

@@ -1,16 +1,17 @@
-
 package com.tqs.project.repository;
-
-
 
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.ConstraintViolationException;
 
-import com.tqs.project.Model.BusinessCourierInteractionsEventType;
-import com.tqs.project.Model.BusinessCourierInteractionsEventTypeEnum;
+import com.tqs.project.Exception.BadLocationException;
+import com.tqs.project.Model.Address;
+import com.tqs.project.Model.Business;
+import com.tqs.project.Model.Shop;
 import com.tqs.project.Model.User;
+import com.tqs.project.Repository.BusinessRepository;
+import com.tqs.project.Repository.ShopRepository;
 import com.tqs.project.Repository.UserRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
@@ -29,8 +30,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @DataJpaTest
 @Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class UserRepositoryTest {
-
+public class ShopRepositoryTest {
     @Container
     public static MySQLContainer container = new MySQLContainer()
         .withUsername("user")
@@ -43,77 +43,99 @@ public class UserRepositoryTest {
         registry.add("spring.datasource.password", container::getPassword);
         registry.add("spring.datasource.username", container::getUsername);
     }
-    @Test
-    void contextLoads(){
-        System.out.println("Context Loads!");
-    }
-
-    @Autowired
-    private UserRepository rep;
 
     @Autowired
     private TestEntityManager entityManager;
-    
-    @Test
-    void testWhenCreateUserAndFindById_thenReturnSameUser() {
-        User x = new User();
-        x.setPassword("xxxx");
-        x.setUsername("username");
+    @Autowired
+    private ShopRepository rep;
 
+    @Autowired
+    private UserRepository repUser;
+    @Autowired
+    private BusinessRepository repBusi;
+    @Test
+    void testWhenCreateShopAndFindById_thenReturnSameShop() throws BadLocationException {
+        Business b1 = new Business();
+        User user = new User();
+        user.setPassword("xxxx");
+        user.setUsername("username");
+        b1.setUser(user);
+        repUser.saveAndFlush(user);
+        entityManager.persistAndFlush(b1);
+
+        Shop x = new Shop();
+        x.setName("Continente");
+        x.setShop_address(new Address(50.0,-50.0));
+        x.setBusiness(b1);
+        repUser.saveAndFlush(user);
         entityManager.persistAndFlush(x);
-        Optional<User> res = rep.findById(x.getId());
+        Optional<Shop> res = rep.findById(x.getId());
         
         assertThat(res).isPresent().contains(x);
     }
 
     @Test
     void testWhenFindByInvalidId_thenReturnNull() {
-        Optional<User> res = rep.findById(-1L);
+        Optional<Shop> res = rep.findById(-1L);
         assertThat(res).isNotPresent();
     }
+
+
+
     /* ------------------------------------------------- *
      * FIND TESTS                                  *
      * ------------------------------------------------- *
      */
 
     @Test
-    void testGivenUserAndFindByAll_thenReturnSameUser() {
-        User  b1 = new User();
-        User  b2 = new User();
-        b1.setPassword("xxxx");
-        b1.setUsername("username");
-        b2.setPassword("aaa");
-        b2.setUsername("ccc");
+    void testGivenShopAndFindByAll_thenReturnSameShop() throws BadLocationException {
+        
+        Business b1 = new Business();
+        User user = new User();
+        user.setPassword("xxxx");
+        user.setUsername("username");
+        b1.setUser(user);
+        repUser.saveAndFlush(user);
         entityManager.persistAndFlush(b1);
-        entityManager.persistAndFlush(b2);
+
+        Shop x = new Shop();
+        x.setName("Continente");
+        x.setShop_address(new Address(50.0,-50.0));
+        x.setBusiness(b1);
+        Shop x1 = new Shop();
+        x1.setName("Continente");
+        x1.setShop_address(new Address(80.0,-110.0));
+        x1.setBusiness(b1);
+        entityManager.persistAndFlush(x);
+        entityManager.persistAndFlush(x1);
 
 
-        List<User> all = rep.findAll();
+        List<Shop> all = rep.findAll();
 
         assertThat(all).isNotNull();
         assertThat(all)
                 .hasSize(2)
-                .extracting(User::getId)
-                .contains(b1.getId(), b2.getId());
+                .extracting(Shop::getId)
+                .contains(x.getId(), x1.getId());
         assertThat(all)
                 .hasSize(2)
-                .extracting(User::getUsername)
-                .contains(b1.getUsername(), b2.getUsername());
+                .extracting(Shop::getBusiness)
+                .contains(x.getBusiness(), x1.getBusiness());
+        
     }
 
     @Test
-    void testGivenNoUser_whenFindAll_thenReturnEmpty() {
-        List<User> all = rep.findAll();
+    void testGivenNoShop_whenFindAll_thenReturnEmpty() {
+        List<Shop> all = rep.findAll();
         assertThat(all).isNotNull().isEmpty();
     }
 
     @Test
-    void testWhenCreateUser_thenReturnException() {
-        User  x = new User();
+    void testWhenCreateShop_thenReturnException() {
+        Shop  x = new Shop();
         assertThrows(ConstraintViolationException.class, () -> {
             entityManager.persistAndFlush(x);
         });
     }
-
     
 }

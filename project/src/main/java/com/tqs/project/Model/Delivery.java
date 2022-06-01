@@ -1,8 +1,7 @@
 package com.tqs.project.Model;
-import lombok.Data;
 
 import java.sql.Timestamp;
-import java.util.Objects;
+import java.util.Date;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -16,7 +15,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 @Table(name="delivery")
 @Entity
 public class Delivery {
@@ -24,9 +28,10 @@ public class Delivery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column
-    @NotNull
-    private Timestamp timestamp;
+    @Column(updatable = false)
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestamp;
 
     @Column
     private double delivery_timestamp;
@@ -79,7 +84,7 @@ public class Delivery {
     }
 
 
-    public Timestamp getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 

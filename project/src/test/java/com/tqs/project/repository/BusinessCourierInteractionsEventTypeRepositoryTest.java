@@ -4,10 +4,13 @@ package com.tqs.project.repository;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.ConstraintViolationException;
+
 import com.tqs.project.Model.BusinessCourierInteractionsEventType;
 import com.tqs.project.Model.BusinessCourierInteractionsEventTypeEnum;
 import com.tqs.project.Repository.BusinessCourierInteractionsEventTypeRepository;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -94,5 +97,13 @@ public class BusinessCourierInteractionsEventTypeRepositoryTest {
     void testGivenNoBusinessCourierInteractionsEventType_whenFindAll_thenReturnEmpty() {
         List<BusinessCourierInteractionsEventType> all = rep.findAll();
         assertThat(all).isNotNull().isEmpty();
+    }
+
+    @Test
+    void testWhenCreateInvalidBusinessCourierInteractionsEventTypeAndFindById_thenReturnException() {
+        BusinessCourierInteractionsEventType  x = new BusinessCourierInteractionsEventType();
+        assertThrows(ConstraintViolationException.class, () -> {
+            entityManager.persistAndFlush(x);
+        });
     }
 }

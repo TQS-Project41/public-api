@@ -1,5 +1,6 @@
 package com.tqs.project.service;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.AfterDomainEventPublication;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,14 +37,15 @@ import static org.assertj.core.api.Assertions.assertThat;
         b1.setId(111L);
 
         BusinessCourierInteractions b2 = new BusinessCourierInteractions();
-        b1.setId(222L);
+        b2.setId(222L);
 
         List<BusinessCourierInteractions> allBusinessCourierInteractions = Arrays.asList(b1, b2);
 
-        Mockito.when(rep.findById(b1.getId())).thenReturn(Optional.of(b1));
+        Mockito.when(rep.findById(111L)).thenReturn(Optional.of(b1));
         Mockito.when(rep.findAll()).thenReturn(allBusinessCourierInteractions);
         Mockito.when(rep.findById(-99L)).thenReturn(Optional.empty());
     }
+
 
     @Test
      void whenSearchBusinessCourierInteractionsId_thenBusinessCourierInteractionsShouldBeFound() {

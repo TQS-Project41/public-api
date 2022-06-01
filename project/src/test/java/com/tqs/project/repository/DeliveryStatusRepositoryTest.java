@@ -1,16 +1,22 @@
-
 package com.tqs.project.repository;
-
-
-
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.PersistenceException;
 import javax.validation.ConstraintViolationException;
 
+import com.tqs.project.Exception.BadLocationException;
+import com.tqs.project.Model.Address;
+import com.tqs.project.Model.Business;
 import com.tqs.project.Model.BusinessCourierInteractionsEventType;
 import com.tqs.project.Model.BusinessCourierInteractionsEventTypeEnum;
+import com.tqs.project.Model.DeliveryStatus;
+import com.tqs.project.Model.DeliveryStatusEnum;
+import com.tqs.project.Model.Shop;
 import com.tqs.project.Model.User;
+import com.tqs.project.Repository.BusinessRepository;
+import com.tqs.project.Repository.DeliveryStatusRepository;
+import com.tqs.project.Repository.ShopRepository;
 import com.tqs.project.Repository.UserRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
@@ -29,8 +35,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @DataJpaTest
 @Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class UserRepositoryTest {
-
+public class DeliveryStatusRepositoryTest {
     @Container
     public static MySQLContainer container = new MySQLContainer()
         .withUsername("user")
@@ -43,77 +48,73 @@ public class UserRepositoryTest {
         registry.add("spring.datasource.password", container::getPassword);
         registry.add("spring.datasource.username", container::getUsername);
     }
-    @Test
-    void contextLoads(){
-        System.out.println("Context Loads!");
-    }
-
-    @Autowired
-    private UserRepository rep;
 
     @Autowired
     private TestEntityManager entityManager;
-    
-    @Test
-    void testWhenCreateUserAndFindById_thenReturnSameUser() {
-        User x = new User();
-        x.setPassword("xxxx");
-        x.setUsername("username");
 
-        entityManager.persistAndFlush(x);
-        Optional<User> res = rep.findById(x.getId());
+    
+
+    @Autowired
+    private DeliveryStatusRepository rep;
+
+    @Test
+    void testWhenCreateDeliveryStatusAndFindById_thenReturnSameDeliveryStatus() throws BadLocationException {
+        DeliveryStatus b1 = new DeliveryStatus();
+        b1.setDescription(DeliveryStatusEnum.QUEUED);
+        entityManager.persistAndFlush(b1);
+        Optional<DeliveryStatus> res = rep.findById(b1.getId());
         
-        assertThat(res).isPresent().contains(x);
+        assertThat(res).isPresent().contains(b1);
     }
+
+    
 
     @Test
     void testWhenFindByInvalidId_thenReturnNull() {
-        Optional<User> res = rep.findById(-1L);
+        Optional<DeliveryStatus> res = rep.findById(-1L);
         assertThat(res).isNotPresent();
     }
+
     /* ------------------------------------------------- *
      * FIND TESTS                                  *
      * ------------------------------------------------- *
      */
 
     @Test
-    void testGivenUserAndFindByAll_thenReturnSameUser() {
-        User  b1 = new User();
-        User  b2 = new User();
-        b1.setPassword("xxxx");
-        b1.setUsername("username");
-        b2.setPassword("aaa");
-        b2.setUsername("ccc");
+    void testGivenDeliveryStatusAndFindByAll_thenReturnSameDeliveryStatus() {
+        DeliveryStatus b1 = new DeliveryStatus();
+        b1.setDescription(DeliveryStatusEnum.QUEUED);
         entityManager.persistAndFlush(b1);
+        
+        DeliveryStatus b2 = new DeliveryStatus();
+        b2.setDescription(DeliveryStatusEnum.QUEUED);
         entityManager.persistAndFlush(b2);
 
 
-        List<User> all = rep.findAll();
+        List<DeliveryStatus> all = rep.findAll();
 
         assertThat(all).isNotNull();
         assertThat(all)
                 .hasSize(2)
-                .extracting(User::getId)
+                .extracting(DeliveryStatus::getId)
                 .contains(b1.getId(), b2.getId());
         assertThat(all)
                 .hasSize(2)
-                .extracting(User::getUsername)
-                .contains(b1.getUsername(), b2.getUsername());
+                .extracting(DeliveryStatus::getDescription)
+                .contains(b1.getDescription(), b2.getDescription());
     }
 
     @Test
-    void testGivenNoUser_whenFindAll_thenReturnEmpty() {
-        List<User> all = rep.findAll();
+    void testGivenNoDeliveryStatus_whenFindAll_thenReturnEmpty() {
+        List<DeliveryStatus> all = rep.findAll();
         assertThat(all).isNotNull().isEmpty();
     }
 
     @Test
-    void testWhenCreateUser_thenReturnException() {
-        User  x = new User();
+    void testWhenCreateDeliveryStatus_thenReturnException() {
+        DeliveryStatus  x = new DeliveryStatus();
         assertThrows(ConstraintViolationException.class, () -> {
             entityManager.persistAndFlush(x);
         });
     }
-
-    
 }

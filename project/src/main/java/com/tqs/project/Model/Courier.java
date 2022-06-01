@@ -71,13 +71,6 @@ public class Courier {
         this.businessCourierInteractions = businessCourierInteractions;
     }
 
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public User getUser() {
         return user;
@@ -130,6 +123,16 @@ public class Courier {
     @Override
     public String toString() {
         return "Courier [birthdate=" + birthdate + ", name=" + name + ", photo=" + photo + ", user=" + user + "]";
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     

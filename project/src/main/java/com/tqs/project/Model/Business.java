@@ -50,15 +50,6 @@ public class Business {
         this.businessCourierInteractions = businessCourierInteractions;
     }
 
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
     public User getUser() {
         return user;
     }
@@ -82,6 +73,19 @@ public class Business {
     public void setBusinessCourierInteractions(Set<BusinessCourierInteractions> businessCourierInteractions) {
         this.businessCourierInteractions = businessCourierInteractions;
     }
+
+
+    public Long getId() {
+        return id;
+    }
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+
+   
     
     
 }
