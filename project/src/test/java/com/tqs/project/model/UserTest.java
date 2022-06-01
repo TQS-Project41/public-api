@@ -5,10 +5,8 @@ import static org.junit.Assert.assertThrows;
 import com.tqs.project.Exception.UserAlreadyAssignedException;
 import com.tqs.project.Model.Business;
 import com.tqs.project.Model.Courier;
-import com.tqs.project.Model.Shop;
 import com.tqs.project.Model.User;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 public class UserTest {

@@ -50,6 +50,14 @@ public class Business {
         this.businessCourierInteractions = businessCourierInteractions;
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 
     public User getUser() {
         return user;

@@ -39,7 +39,7 @@ public class Courier {
 
     
     @Column
-     @NotNull(message = "Name é obrigatório")
+    @NotNull(message = "Name é obrigatório")
     private String name;
     
     @Column
@@ -71,6 +71,13 @@ public class Courier {
         this.businessCourierInteractions = businessCourierInteractions;
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public User getUser() {
         return user;

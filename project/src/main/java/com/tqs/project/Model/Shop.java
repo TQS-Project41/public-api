@@ -1,7 +1,5 @@
 package com.tqs.project.Model;
-import lombok.Data;
 
-import java.sql.Timestamp;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -9,8 +7,6 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,8 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-
 import javax.persistence.Table;
+
 @Table(name="shop")
 @Entity
 public class Shop {
@@ -74,10 +70,14 @@ public class Shop {
     }
 
 
-    public Address getShop_address() {
+    public Address z() {
         return shop_address;
     }
 
+
+    public Address getShop_address() {
+        return this.shop_address;
+    }
 
     public void setShop_address(Address shop_address) {
         this.shop_address = shop_address;
