@@ -1,5 +1,4 @@
 package com.tqs.project.Model;
-import lombok.Data;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -21,6 +20,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 @Table(name="delivery")
 @Entity
 public class Delivery {

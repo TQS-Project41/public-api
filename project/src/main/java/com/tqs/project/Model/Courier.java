@@ -39,7 +39,7 @@ public class Courier {
 
     
     @Column
-     @NotNull(message = "Name é obrigatório")
+    @NotNull(message = "Name é obrigatório")
     private String name;
     
     @Column

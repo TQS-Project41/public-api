@@ -25,7 +25,7 @@ public class DeliveryStatus {
     private DeliveryStatusEnum description;
 
     public DeliveryStatus() {
-        }
+    }
 
     public DeliveryStatus(DeliveryStatusEnum description) {
         this.description = description;

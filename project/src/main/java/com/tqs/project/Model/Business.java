@@ -50,7 +50,6 @@ public class Business {
         this.businessCourierInteractions = businessCourierInteractions;
     }
 
-
     public User getUser() {
         return user;
     }

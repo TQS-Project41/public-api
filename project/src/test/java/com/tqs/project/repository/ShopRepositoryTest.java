@@ -1,18 +1,13 @@
 package com.tqs.project.repository;
 
-
-
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.PersistenceException;
 import javax.validation.ConstraintViolationException;
 
 import com.tqs.project.Exception.BadLocationException;
 import com.tqs.project.Model.Address;
 import com.tqs.project.Model.Business;
-import com.tqs.project.Model.BusinessCourierInteractionsEventType;
-import com.tqs.project.Model.BusinessCourierInteractionsEventTypeEnum;
 import com.tqs.project.Model.Shop;
 import com.tqs.project.Model.User;
 import com.tqs.project.Repository.BusinessRepository;

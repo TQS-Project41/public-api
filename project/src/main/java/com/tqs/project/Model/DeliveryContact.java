@@ -8,7 +8,7 @@ import com.tqs.project.Exception.BadPhoneNumberException;
 @Embeddable
 public class DeliveryContact {
     
-     @NotNull(message = "name é obrigatório")
+    @NotNull(message = "name é obrigatório")
     private String name;
     @NotNull(message = "phoneNumber é obrigatório")
     private String phoneNumber;
