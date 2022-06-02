@@ -35,10 +35,13 @@ public class CourierService {
     public Courier update(Courier courier) {
         Courier existingCourier = rep.findById( courier.getId() ).orElse(null);
 
-        if (courier.getPhoto() != null) existingCourier.setPhoto(courier.getPhoto());
-        if (courier.getDelivery() != null) existingCourier.setDelivery(courier.getDelivery());
-        if (courier.getBusinessCourierInteractions() != null) existingCourier.setBusinessCourierInteractions(courier.getBusinessCourierInteractions());
+        if (existingCourier != null) {
+            if (courier.getPhoto() != null) existingCourier.setPhoto(courier.getPhoto());
+            if (courier.getDelivery() != null) existingCourier.setDelivery(courier.getDelivery());
+            if (courier.getBusinessCourierInteractions() != null) existingCourier.setBusinessCourierInteractions(courier.getBusinessCourierInteractions());
 
-        return rep.save(existingCourier);
+            return rep.save(existingCourier);
+        }
+        return null;
     }
 }

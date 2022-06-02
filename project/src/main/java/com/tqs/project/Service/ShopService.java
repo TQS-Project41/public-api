@@ -41,11 +41,14 @@ public class ShopService {
     public Shop update(Shop shop) {
         Shop existingShop = rep.findById( shop.getId() ).orElse(null);
 
-        if (shop.getName() != null) existingShop.setName(shop.getName());
-        if (shop.getShop_address() != null) existingShop.setShop_address(shop.getShop_address());
-        if (shop.getBusiness() != null) existingShop.setBusiness(shop.getBusiness());
-        if (shop.getDelivery() != null) existingShop.setDelivery(shop.getDelivery());
+        if (existingShop != null) {
+            if (shop.getName() != null) existingShop.setName(shop.getName());
+            if (shop.getShop_address() != null) existingShop.setShop_address(shop.getShop_address());
+            if (shop.getBusiness() != null) existingShop.setBusiness(shop.getBusiness());
+            if (shop.getDelivery() != null) existingShop.setDelivery(shop.getDelivery());
 
-        return rep.save(existingShop);
+            return rep.save(existingShop);
+        }
+        return null;
     }
 }

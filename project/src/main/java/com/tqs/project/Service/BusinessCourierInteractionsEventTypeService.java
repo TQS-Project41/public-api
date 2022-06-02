@@ -35,9 +35,12 @@ public class BusinessCourierInteractionsEventTypeService {
     public BusinessCourierInteractionsEventType update(BusinessCourierInteractionsEventType businessCourierInteractionsEventType) {
         BusinessCourierInteractionsEventType existingBusinessCourierInteractionsEventType = rep.findById( businessCourierInteractionsEventType.getId() ).orElse(null);
 
-        if (businessCourierInteractionsEventType.getDescription() != null) existingBusinessCourierInteractionsEventType.setDescription(businessCourierInteractionsEventType.getDescription());
-        if (businessCourierInteractionsEventType.getBusinessCourierInteractions() != null) businessCourierInteractionsEventType.setBusinessCourierInteractions(businessCourierInteractionsEventType.getBusinessCourierInteractions());
+        if (existingBusinessCourierInteractionsEventType != null) {
+            if (businessCourierInteractionsEventType.getDescription() != null) existingBusinessCourierInteractionsEventType.setDescription(businessCourierInteractionsEventType.getDescription());
+            if (businessCourierInteractionsEventType.getBusinessCourierInteractions() != null) businessCourierInteractionsEventType.setBusinessCourierInteractions(businessCourierInteractionsEventType.getBusinessCourierInteractions());
 
-        return rep.save(existingBusinessCourierInteractionsEventType);
+            return rep.save(existingBusinessCourierInteractionsEventType);
+        }
+        return null;
     }
 }

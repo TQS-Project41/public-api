@@ -35,8 +35,11 @@ public class BusinessCourierInteractionsService {
     public BusinessCourierInteractions update(BusinessCourierInteractions businessCourierInteractions) {
         BusinessCourierInteractions existingBusinessCourierInteractions = rep.findById( businessCourierInteractions.getId() ).orElse(null);
 
-        if (businessCourierInteractions.getEvent() != null) existingBusinessCourierInteractions.setEvent(businessCourierInteractions.getEvent());
+        if (existingBusinessCourierInteractions != null) {
+            if (businessCourierInteractions.getEvent() != null) existingBusinessCourierInteractions.setEvent(businessCourierInteractions.getEvent());
 
-        return rep.save(existingBusinessCourierInteractions);
+            return rep.save(existingBusinessCourierInteractions);
+        }
+        return null;
     }
 }

@@ -35,8 +35,11 @@ public class DeliveryStatusService {
     public DeliveryStatus update(DeliveryStatus delivery) {
         DeliveryStatus existingDeliveryStatus = rep.findById( delivery.getId() ).orElse(null);
 
-        if (delivery.getDescription() != null) existingDeliveryStatus.setDescription(delivery.getDescription());
+        if (existingDeliveryStatus != null) {
+            if (delivery.getDescription() != null) existingDeliveryStatus.setDescription(delivery.getDescription());
 
-        return rep.save(existingDeliveryStatus);
+            return rep.save(existingDeliveryStatus);
+        }
+        return null;
     }
 }
