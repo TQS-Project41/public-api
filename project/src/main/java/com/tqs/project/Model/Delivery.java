@@ -34,7 +34,7 @@ public class Delivery {
     private Date timestamp;
 
     @Column
-    private double delivery_timestamp;
+    private long delivery_timestamp;
 
     @Embedded
     @NotNull
@@ -64,7 +64,7 @@ public class Delivery {
     }
     
 
-    public Delivery(double delivery_timestamp, Address delivery_address, DeliveryContact client, Shop shop,
+    public Delivery(long delivery_timestamp, Address delivery_address, DeliveryContact client, Shop shop,
             Courier courier) {
         this.delivery_timestamp = delivery_timestamp;
         this.delivery_address = delivery_address;
@@ -92,11 +92,11 @@ public class Delivery {
         this.timestamp = timestamp;
     }
 
-    public double getDelivery_timestamp() {
+    public long getDelivery_timestamp() {
         return delivery_timestamp;
     }
 
-    public void setDelivery_timestamp(double delivery_timestamp) {
+    public void setDelivery_timestamp(long delivery_timestamp) {
         this.delivery_timestamp = delivery_timestamp;
     }
 
