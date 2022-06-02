@@ -42,11 +42,15 @@ public class UserService {
     public User update(User user) throws UserAlreadyAssignedException {
         User existingUser = rep.findById( user.getId() ).orElse(null);
 
-        // não irá ser possível alterar o username!
-        if (user.getCourier() != null) existingUser.setCourier(user.getCourier());
-        if (user.getBusiness() != null) existingUser.setBusiness(user.getBusiness());
-        if (user.getPassword() != null) existingUser.setPassword(user.getPassword());
+        if (existingUser != null) {
+            // não irá ser possível alterar o username!
+            if (user.getCourier() != null) existingUser.setCourier(user.getCourier());
+            if (user.getBusiness() != null) existingUser.setBusiness(user.getBusiness());
+            if (user.getPassword() != null) existingUser.setPassword(user.getPassword());
 
-        return rep.save(existingUser);
+            return rep.save(existingUser);
+        }
+        return null;
+       
     }
 }
