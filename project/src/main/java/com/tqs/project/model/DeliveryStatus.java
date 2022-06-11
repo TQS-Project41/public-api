@@ -1,6 +1,4 @@
-package com.tqs.project.Model;
-
-import lombok.Data;
+package com.tqs.project.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +10,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 import javax.persistence.Table;
+
 @Table(name="delivery_status")
 @Entity
 public class DeliveryStatus {
@@ -31,9 +30,6 @@ public class DeliveryStatus {
         this.description = description;
     }
     
-
-    
-
     public long getId() {
         return id;
     }
@@ -48,14 +44,14 @@ public class DeliveryStatus {
 
     public void setDescription(DeliveryStatusEnum description) {
         this.description = description;
-    }
+    }    
 
     @Override
     public String toString() {
-        return "DeliveryStatus [description=" + description + ", id=" + id + "]";
+        return "{" +
+            " id='" + getId() + "'" +
+            ", description='" + getDescription() + "'" +
+            "}";
     }
     
-    
-
-
 }

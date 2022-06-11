@@ -1,10 +1,7 @@
-package com.tqs.project.Model;
+package com.tqs.project.model;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.Set;
+import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,19 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import org.hibernate.annotations.CreationTimestamp;
-
-import lombok.Data;
 
 
 
@@ -39,8 +26,7 @@ public class BusinessCourierInteractions {
 
     @Column(updatable = false)
     @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
+    private LocalDateTime timestamp;
 
     @ManyToOne
     @JoinColumn(name="business_id", nullable=false)
@@ -56,16 +42,12 @@ public class BusinessCourierInteractions {
     
     public BusinessCourierInteractions() {
     }
-
-    
     
     public BusinessCourierInteractions(Business business, Courier courier, BusinessCourierInteractionsEventType event) {
         this.business = business;
         this.courier = courier;
         this.event = event;
     }
-
-
 
     public long getId() {
         return id;
@@ -75,12 +57,8 @@ public class BusinessCourierInteractions {
         this.id = id;
     }
 
-    public Date getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
     }
 
     public Business getBusiness() {
@@ -106,6 +84,5 @@ public class BusinessCourierInteractions {
     public void setEvent(BusinessCourierInteractionsEventType event) {
         this.event = event;
     }
-
   
 }
