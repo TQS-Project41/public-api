@@ -1,6 +1,5 @@
 package com.tqs.project.service;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,15 +8,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.AfterDomainEventPublication;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.tqs.project.Model.BusinessCourierInteractions;
-import com.tqs.project.Repository.BusinessCourierInteractionsRepository;
-import com.tqs.project.Service.BusinessCourierInteractionsService;
+import com.tqs.project.model.BusinessCourierInteractions;
+import com.tqs.project.repository.BusinessCourierInteractionsRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

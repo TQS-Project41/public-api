@@ -13,9 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.tqs.project.Model.Courier;
-import com.tqs.project.Repository.CourierRepository;
-import com.tqs.project.Service.CourierService;
+import com.tqs.project.model.Courier;
+import com.tqs.project.repository.CourierRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

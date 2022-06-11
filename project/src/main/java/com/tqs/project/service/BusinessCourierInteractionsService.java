@@ -1,10 +1,10 @@
-package com.tqs.project.Service;
+package com.tqs.project.service;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.tqs.project.Model.BusinessCourierInteractions;
-import com.tqs.project.Repository.BusinessCourierInteractionsRepository;
+import com.tqs.project.model.BusinessCourierInteractions;
+import com.tqs.project.repository.BusinessCourierInteractionsRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

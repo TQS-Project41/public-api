@@ -13,10 +13,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.tqs.project.Model.Business;
-import com.tqs.project.Model.User;
-import com.tqs.project.Repository.BusinessRepository;
-import com.tqs.project.Service.BusinessService;
+import com.tqs.project.model.Business;
+import com.tqs.project.model.User;
+import com.tqs.project.repository.BusinessRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

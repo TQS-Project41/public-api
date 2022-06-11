@@ -1,10 +1,10 @@
-package com.tqs.project.Service;
+package com.tqs.project.service;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.tqs.project.Model.Delivery;
-import com.tqs.project.Repository.DeliveryRepository;
+import com.tqs.project.model.Delivery;
+import com.tqs.project.repository.DeliveryRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,11 +31,4 @@ public class DeliveryService {
     public Optional<Delivery> getDeliveryById(long id) {
         return rep.findById(id);
     }
-
-    /*  ***************** dar update a uma delivery ? *****************
-    public Delivery update(Delivery delivery) {
-        Delivery existingDelivery = rep.findById( delivery.getId() ).orElse(null);
-
-        return rep.save(existingDelivery);
-    } */
 }

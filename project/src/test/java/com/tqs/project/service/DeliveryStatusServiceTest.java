@@ -13,10 +13,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.tqs.project.Model.DeliveryStatus;
-import com.tqs.project.Model.DeliveryStatusEnum;
-import com.tqs.project.Repository.DeliveryStatusRepository;
-import com.tqs.project.Service.DeliveryStatusService;
+import com.tqs.project.model.DeliveryStatus;
+import com.tqs.project.model.DeliveryStatusEnum;
+import com.tqs.project.repository.DeliveryStatusRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

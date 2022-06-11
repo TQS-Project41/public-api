@@ -13,10 +13,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.tqs.project.Model.BusinessCourierInteractionsEventType;
-import com.tqs.project.Model.BusinessCourierInteractionsEventTypeEnum;
-import com.tqs.project.Repository.BusinessCourierInteractionsEventTypeRepository;
-import com.tqs.project.Service.BusinessCourierInteractionsEventTypeService;
+import com.tqs.project.model.BusinessCourierInteractionsEventType;
+import com.tqs.project.model.BusinessCourierInteractionsEventTypeEnum;
+import com.tqs.project.repository.BusinessCourierInteractionsEventTypeRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

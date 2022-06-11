@@ -1,10 +1,10 @@
-package com.tqs.project.Service;
+package com.tqs.project.service;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.tqs.project.Model.DeliveryStatus;
-import com.tqs.project.Repository.DeliveryStatusRepository;
+import com.tqs.project.model.DeliveryStatus;
+import com.tqs.project.repository.DeliveryStatusRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
