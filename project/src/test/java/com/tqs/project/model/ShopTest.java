@@ -5,6 +5,8 @@ import static org.junit.Assert.assertThrows;
 
 import com.tqs.project.exception.BadLocationException;
 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 import org.junit.jupiter.api.Test;
 
 public class ShopTest {
@@ -46,5 +48,10 @@ public class ShopTest {
         assertThrows(BadLocationException.class, () -> {
             s.setAddress(new Address(50, -350));;
         });
+    }
+
+    @Test
+    void whenCallingToString_thenReturnString() {
+        assertNotEquals(null, new Shop().toString());
     }
 }

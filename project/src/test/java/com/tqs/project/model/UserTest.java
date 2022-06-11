@@ -1,13 +1,13 @@
 package com.tqs.project.model;
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import com.tqs.project.exception.UserAlreadyAssignedException;
 import org.junit.jupiter.api.Test;
 
 public class UserTest {
 
     @Test
-    void testWhenCreateValidUserThenReturnUser() throws UserAlreadyAssignedException {
+    void testWhenCreateValidUserThenReturnUser() {
 
         User u = new User("x","xxxx");
 
@@ -18,7 +18,7 @@ public class UserTest {
     }
 
     @Test
-    void testWhenCreateValidUserThenReturnUserv2() throws UserAlreadyAssignedException {
+    void testWhenCreateValidUserThenReturnUserv2() {
 
         User u = new User();
         u.setId(1);
@@ -29,5 +29,10 @@ public class UserTest {
         assertEquals("x", u.getEmail());
         assertEquals("xxxx", u.getPassword());
        
+    }
+
+    @Test
+    void whenCallingToString_thenReturnString() {
+        assertNotEquals(null, new User().toString());
     }
 }

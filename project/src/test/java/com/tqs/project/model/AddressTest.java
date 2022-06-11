@@ -2,6 +2,7 @@ package com.tqs.project.model;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.tqs.project.exception.BadLocationException;
 
@@ -61,6 +62,11 @@ public class AddressTest{
             new Address().setLongitude(-280);
         });
 
+    }
+
+    @Test
+    void whenCallingToString_thenReturnString() {
+        assertNotEquals(null, new Address().toString());
     }
 
 }

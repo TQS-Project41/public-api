@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import javax.persistence.PersistenceException;
 
-import com.tqs.project.exception.UserAlreadyAssignedException;
 import com.tqs.project.model.Business;
 import com.tqs.project.model.BusinessCourierInteractions;
 import com.tqs.project.model.BusinessCourierInteractionsEventType;
@@ -58,7 +57,7 @@ public class BusinessCourierInteractionsRepositoryTest {
     private TestEntityManager entityManager;
     
     @Test
-    void testWhenCreateBusinessCourierInteractionsAndFindById_thenReturnSameBusinessCourierInteractions() throws UserAlreadyAssignedException {
+    void testWhenCreateBusinessCourierInteractionsAndFindById_thenReturnSameBusinessCourierInteractions() {
         BusinessCourierInteractions x = new BusinessCourierInteractions();
         Courier c = new Courier();
         c.setName("alex");
@@ -93,7 +92,7 @@ public class BusinessCourierInteractionsRepositoryTest {
      */
     
     @Test
-    void testGivenBusinessCourierInteractionsAndFindByAll_thenReturnSameBusinessCourierInteractions() throws UserAlreadyAssignedException {
+    void testGivenBusinessCourierInteractionsAndFindByAll_thenReturnSameBusinessCourierInteractions() {
       
 
         BusinessCourierInteractions x = new BusinessCourierInteractions();
