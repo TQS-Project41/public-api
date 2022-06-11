@@ -3,7 +3,6 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.PersistenceException;
-import javax.validation.ConstraintViolationException;
 
 import com.tqs.project.Exception.UserAlreadyAssignedException;
 import com.tqs.project.Model.Business;
@@ -37,20 +36,13 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class BusinessCourierInteractionsRepositoryTest {
     
     @Container
-    public static MySQLContainer container = new MySQLContainer()
-        .withUsername("user")
-        .withPassword("user")
-        .withDatabaseName("tqs_41");
+    public static MySQLContainer<?> container = new MySQLContainer<>("mysql");
 
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", container::getJdbcUrl);
         registry.add("spring.datasource.password", container::getPassword);
         registry.add("spring.datasource.username", container::getUsername);
-    }
-    @Test
-    void contextLoads(){
-        System.out.println("Context Loads!");
     }
 
     @Autowired
@@ -78,7 +70,6 @@ public class BusinessCourierInteractionsRepositoryTest {
         User user = new User();
         user.setPassword("xxxx");
         user.setUsername("username");
-        user.setCourier(null);
         Business b = new Business();
         BusinessCourierInteractionsEventType bus= new BusinessCourierInteractionsEventType(BusinessCourierInteractionsEventTypeEnum.ACCEPT);
         x.setEvent(bus);
@@ -124,7 +115,6 @@ public class BusinessCourierInteractionsRepositoryTest {
         User user = new User();
         user.setPassword("xxxx");
         user.setUsername("username");
-        user.setCourier(null);
         Business b = new Business();
         Business b1 = new Business();
 

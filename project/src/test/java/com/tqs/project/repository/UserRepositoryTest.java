@@ -1,15 +1,11 @@
 
 package com.tqs.project.repository;
 
-
-
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.ConstraintViolationException;
 
-import com.tqs.project.Model.BusinessCourierInteractionsEventType;
-import com.tqs.project.Model.BusinessCourierInteractionsEventTypeEnum;
 import com.tqs.project.Model.User;
 import com.tqs.project.Repository.UserRepository;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,20 +28,13 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class UserRepositoryTest {
 
     @Container
-    public static MySQLContainer container = new MySQLContainer()
-        .withUsername("user")
-        .withPassword("user")
-        .withDatabaseName("tqs_41");
+    public static MySQLContainer<?> container = new MySQLContainer<>("mysql");
 
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", container::getJdbcUrl);
         registry.add("spring.datasource.password", container::getPassword);
         registry.add("spring.datasource.username", container::getUsername);
-    }
-    @Test
-    void contextLoads(){
-        System.out.println("Context Loads!");
     }
 
     @Autowired
@@ -113,6 +102,15 @@ public class UserRepositoryTest {
         assertThrows(ConstraintViolationException.class, () -> {
             entityManager.persistAndFlush(x);
         });
+    }
+
+    @Test
+    void whenFindingUserByEmailAndPassword_thenReturnOneOrNull() {
+        User user = new User("alex200020011@gmail.com", "aaaaa");
+        entityManager.persistAndFlush(user);
+
+        assertThat(rep.findByEmailAndPassword("alex200020011@gmail.com", "aaaaa")).isPresent();
+        assertThat(rep.findByEmailAndPassword("alex200020011@gmail.com", "bbbbb")).isNotPresent();
     }
 
     
