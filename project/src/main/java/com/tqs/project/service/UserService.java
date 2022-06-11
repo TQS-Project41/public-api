@@ -26,4 +26,8 @@ public class UserService {
     public Optional<User> getUserById(long id) {
         return rep.findById(id);
     }
+
+    public Optional<User> getByEmailAndPassword(String email, String password) {
+        return rep.findByEmailAndPassword(email, password);
+    }
 }

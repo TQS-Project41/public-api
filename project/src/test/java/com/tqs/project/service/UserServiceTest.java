@@ -78,9 +78,8 @@ import static org.assertj.core.api.Assertions.assertThat;
         assertThat(user).isNull();
     }
 
-
     @Test
-     void whengetAll_thenReturn4Records() {
+    void whengetAll_thenReturn4Records() {
         User john = new User("123beer456", "jonikings");
         User gon = new User("3trwef4", "FuraM");
         User peter = new User("jdh2749j", "PeterPain");
@@ -91,6 +90,19 @@ import static org.assertj.core.api.Assertions.assertThat;
         // verify if FindAllUsers is called once
         Mockito.verify(rep, VerificationModeFactory.times(1)).findAll();
 
-        assertThat(allUsers).hasSize(4).extracting(User::getEmail).contains(alex.getEmail(), john.getEmail(), peter.getEmail(), gon.getEmail());
+        assertThat(allUsers).hasSize(4).extracting(User::getEmail).contains(alex.getEmail(), john.getEmail(),
+                peter.getEmail(), gon.getEmail());
+    }
+
+    @Test
+    void whenFindingByUsernameAndPassword_thenReturnsValidOptional() {
+        Mockito.when(rep.findByEmailAndPassword("email", "password")).thenReturn(Optional.of(new User()));
+        Mockito.when(rep.findByEmailAndPassword("email", "password2")).thenReturn(Optional.empty());
+
+        assertThat(service.getByEmailAndPassword("email", "password")).isPresent();
+        assertThat(service.getByEmailAndPassword("email", "password2")).isNotPresent();
+
+        Mockito.verify(rep, VerificationModeFactory.times(1)).findByEmailAndPassword("email", "password");
+        Mockito.verify(rep, VerificationModeFactory.times(1)).findByEmailAndPassword("email", "password2");
     }
  }
