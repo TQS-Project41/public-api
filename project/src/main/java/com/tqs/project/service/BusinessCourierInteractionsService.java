@@ -1,6 +1,5 @@
 package com.tqs.project.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.tqs.project.model.BusinessCourierInteractions;
@@ -15,31 +14,11 @@ public class BusinessCourierInteractionsService {
     @Autowired(required = true)
     private BusinessCourierInteractionsRepository rep;
 
-
     public BusinessCourierInteractions save(BusinessCourierInteractions businessCourierInteractions) {
         return rep.save(businessCourierInteractions);
     }
 
-    public List<BusinessCourierInteractions> saveAll(List<BusinessCourierInteractions> businessCourierInteractionss) {
-        return rep.saveAll(businessCourierInteractionss);
-    }
-    
-    public List<BusinessCourierInteractions> getAllBusinessCourierInteractions() {
-        return rep.findAll();
-    }
-
-    public Optional<BusinessCourierInteractions> getBusinessCourierInteractionsById(Long id) {
+    public Optional<BusinessCourierInteractions> getById(Long id) {
         return rep.findById(id);
-    }
-
-    public BusinessCourierInteractions update(BusinessCourierInteractions businessCourierInteractions) {
-        BusinessCourierInteractions existingBusinessCourierInteractions = rep.findById( businessCourierInteractions.getId() ).orElse(null);
-
-        if (existingBusinessCourierInteractions != null) {
-            if (businessCourierInteractions.getEvent() != null) existingBusinessCourierInteractions.setEvent(businessCourierInteractions.getEvent());
-
-            return rep.save(existingBusinessCourierInteractions);
-        }
-        return null;
     }
 }

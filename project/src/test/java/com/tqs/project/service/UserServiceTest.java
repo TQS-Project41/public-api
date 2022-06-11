@@ -44,6 +44,15 @@ import static org.assertj.core.api.Assertions.assertThat;
         Mockito.when(rep.findById(-99L)).thenReturn(Optional.empty());
     }
 
+    @Test
+    void whenSaveUser_thenReturnUser() {
+        User user = new User();
+        Mockito.when(rep.save(user)).thenReturn(user);
+
+        assertThat(rep.save(user)).isEqualTo(user);
+
+        Mockito.verify(rep, VerificationModeFactory.times(1)).save(user);
+    }
 
     @Test
      void whenSearchUserId_thenUserShouldBeFound() {

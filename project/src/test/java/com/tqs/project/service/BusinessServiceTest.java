@@ -46,6 +46,16 @@ import static org.assertj.core.api.Assertions.assertThat;
         Mockito.when(rep.findById(-99L)).thenReturn(Optional.empty());
     }
 
+    @Test
+    void whenSaveBusiness_thenReturnBusiness() {
+        Business business = new Business();
+        Mockito.when(rep.save(business)).thenReturn(business);
+
+        assertThat(rep.save(business)).isEqualTo(business);
+
+        Mockito.verify(rep, VerificationModeFactory.times(1)).save(business);
+    }
+
 
     @Test
      void whenSearchBusinessId_thenBusinessShouldBeFound() {

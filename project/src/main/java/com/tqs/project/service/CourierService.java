@@ -19,10 +19,6 @@ public class CourierService {
     public Courier save(Courier courier) {
         return rep.save(courier);
     }
-
-    public List<Courier> saveAll(List<Courier> couriers) {
-        return rep.saveAll(couriers);
-    }
     
     public List<Courier> getAllCouriers() {
         return rep.findAll();

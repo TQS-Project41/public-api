@@ -15,13 +15,8 @@ public class UserService {
     @Autowired(required = true)
     private UserRepository rep;
 
-
     public User save(User user) {
         return rep.save(user);
-    }
-
-    public List<User> saveAll(List<User> user) {
-        return rep.saveAll(user);
     }
     
     public List<User> getAllUsers() {

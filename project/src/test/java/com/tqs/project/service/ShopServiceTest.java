@@ -46,6 +46,15 @@ import static org.assertj.core.api.Assertions.assertThat;
         Mockito.when(rep.findById(-99L)).thenReturn(Optional.empty());
     }
 
+    @Test
+    void whenSaveCourier_thenReturnCourier() {
+        Shop shop = new Shop();
+        Mockito.when(rep.save(shop)).thenReturn(shop);
+
+        assertThat(rep.save(shop)).isEqualTo(shop);
+
+        Mockito.verify(rep, VerificationModeFactory.times(1)).save(shop);
+    }
 
     @Test
      void whenSearchShopId_thenShopShouldBeFound() {

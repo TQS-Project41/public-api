@@ -15,13 +15,8 @@ public class BusinessService {
     @Autowired(required = true)
     private BusinessRepository rep;
 
-
     public Business save(Business business) {
         return rep.save(business);
-    }
-
-    public List<Business> saveAll(List<Business> business) {
-        return rep.saveAll(business);
     }
     
     public List<Business> getAllBusinesss() {

@@ -19,10 +19,6 @@ public class DeliveryService {
     public Delivery save(Delivery delivery) {
         return rep.save(delivery);
     }
-
-    public List<Delivery> saveAll(List<Delivery> deliveries) {
-        return rep.saveAll(deliveries);
-    }
     
     public List<Delivery> getAllDeliveries() {
         return rep.findAll();

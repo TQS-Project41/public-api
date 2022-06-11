@@ -19,10 +19,6 @@ public class ShopService {
     public Shop save(Shop shop) {
         return rep.save(shop);
     }
-
-    public List<Shop> saveAll(List<Shop> shops) {
-        return rep.saveAll(shops);
-    }
     
     public List<Shop> getAllShops() {
         return rep.findAll();

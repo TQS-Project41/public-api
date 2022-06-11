@@ -47,6 +47,15 @@ import static org.assertj.core.api.Assertions.assertThat;
         Mockito.when(rep.findById(-99L)).thenReturn(Optional.empty());
     }
 
+    @Test
+    void whenSaveCourier_thenReturnCourier() {
+        Courier courier = new Courier();
+        Mockito.when(rep.save(courier)).thenReturn(courier);
+
+        assertThat(rep.save(courier)).isEqualTo(courier);
+
+        Mockito.verify(rep, VerificationModeFactory.times(1)).save(courier);
+    }
 
     @Test
      void whenSearchCourierId_thenCourierShouldBeFound() {
