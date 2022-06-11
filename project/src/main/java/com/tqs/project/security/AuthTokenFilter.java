@@ -17,8 +17,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.tqs.project.Model.User;
-import com.tqs.project.Service.UserService;
+import com.tqs.project.model.User;
+import com.tqs.project.service.UserService;
 
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
