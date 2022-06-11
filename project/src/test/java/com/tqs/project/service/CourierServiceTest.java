@@ -52,7 +52,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         Courier courier = new Courier();
         Mockito.when(rep.save(courier)).thenReturn(courier);
 
-        assertThat(rep.save(courier)).isEqualTo(courier);
+        assertThat(service.save(courier)).isEqualTo(courier);
 
         Mockito.verify(rep, VerificationModeFactory.times(1)).save(courier);
     }

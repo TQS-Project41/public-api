@@ -55,7 +55,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         Delivery delivery = new Delivery();
         Mockito.when(rep.save(delivery)).thenReturn(delivery);
 
-        assertThat(rep.save(delivery)).isEqualTo(delivery);
+        assertThat(service.save(delivery)).isEqualTo(delivery);
 
         Mockito.verify(rep, VerificationModeFactory.times(1)).save(delivery);
     }

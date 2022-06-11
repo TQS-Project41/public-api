@@ -43,7 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         BusinessCourierInteractions interaction = new BusinessCourierInteractions();
         Mockito.when(rep.save(interaction)).thenReturn(interaction);
 
-        assertThat(rep.save(interaction)).isEqualTo(interaction);
+        assertThat(service.save(interaction)).isEqualTo(interaction);
 
         Mockito.verify(rep, VerificationModeFactory.times(1)).save(interaction);
     }

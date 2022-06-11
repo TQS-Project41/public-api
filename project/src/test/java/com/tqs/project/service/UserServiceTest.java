@@ -49,7 +49,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         User user = new User();
         Mockito.when(rep.save(user)).thenReturn(user);
 
-        assertThat(rep.save(user)).isEqualTo(user);
+        assertThat(service.save(user)).isEqualTo(user);
 
         Mockito.verify(rep, VerificationModeFactory.times(1)).save(user);
     }

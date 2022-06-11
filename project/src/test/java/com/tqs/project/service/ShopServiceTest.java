@@ -51,7 +51,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         Shop shop = new Shop();
         Mockito.when(rep.save(shop)).thenReturn(shop);
 
-        assertThat(rep.save(shop)).isEqualTo(shop);
+        assertThat(service.save(shop)).isEqualTo(shop);
 
         Mockito.verify(rep, VerificationModeFactory.times(1)).save(shop);
     }
