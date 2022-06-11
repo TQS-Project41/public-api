@@ -9,17 +9,34 @@ import org.junit.jupiter.api.Test;
 
 public class ShopTest {
     @Test
-    void testWhenCreateValidShopThenReturnShop() throws BadLocationException {
+    void whenCreateValidShopWithSetters_thenReturnShop() throws BadLocationException {
+        Address address = new Address();
+        Business business = new Business();
+
         Shop s = new Shop();
-        s.setName("Pull Aveiro");
-        s.setAddress(new Address(50, -150));
+
         s.setId(1);
+        s.setName("Pull Aveiro");
+        s.setAddress(address);
+        s.setBusiness(business);
 
         assertEquals(1, s.getId());
         assertEquals("Pull Aveiro", s.getName());
-        assertEquals(50, s.getAddress().getLatitude(),0.001);
-        assertEquals(-150, s.getAddress().getLongitude(),0.001);
+        assertEquals(address, s.getAddress());
+        assertEquals(business, s.getBusiness());
+    }
 
+    @Test
+    void whenCreateValidShopWithConstructor_thenReturnShop() throws BadLocationException {
+        Address address = new Address();
+        Business business = new Business();
+
+        Shop s = new Shop("Pull Aveiro", address, business);
+
+        assertEquals(0, s.getId());
+        assertEquals("Pull Aveiro", s.getName());
+        assertEquals(address, s.getAddress());
+        assertEquals(business, s.getBusiness());
     }
 
     @Test
@@ -29,8 +46,5 @@ public class ShopTest {
         assertThrows(BadLocationException.class, () -> {
             s.setAddress(new Address(50, -350));;
         });
-       
-        
-
     }
 }

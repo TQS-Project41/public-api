@@ -28,11 +28,6 @@ public class Address {
             throw new BadLocationException("A latitude ou a longitude não se encontram nos valores possiveis, latitude deve estar entre -90 a 90 e longitude -180 a 180");       
     }
 
-    @Override
-    public String toString() {
-        return "Address [latitude=" + latitude + ", longitude=" + longitude + "]";
-    }
-
     public double getLatitude() {
         return latitude;
     }
@@ -63,4 +58,13 @@ public class Address {
         // TODO Implement from API
         return Math.sqrt(Math.pow(x.latitude - latitude, 2) + Math.pow(x.longitude - longitude, 2));
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+            " latitude='" + getLatitude() + "'" +
+            ", longitude='" + getLongitude() + "'" +
+            "}";
+    }
+
 }

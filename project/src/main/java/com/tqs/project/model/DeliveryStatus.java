@@ -44,11 +44,14 @@ public class DeliveryStatus {
 
     public void setDescription(DeliveryStatusEnum description) {
         this.description = description;
-    }
+    }    
 
     @Override
     public String toString() {
-        return "DeliveryStatus [description=" + description + ", id=" + id + "]";
+        return "{" +
+            " id='" + getId() + "'" +
+            ", description='" + getDescription() + "'" +
+            "}";
     }
     
 }

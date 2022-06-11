@@ -1,6 +1,6 @@
 package com.tqs.project.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +20,7 @@ public class Courier {
     
     @Id
     @Column(name = "user_id")
-    private Long id;
+    private long id;
     
     @OneToOne
     @MapsId
@@ -36,12 +36,12 @@ public class Courier {
 
     @Column
     @JsonFormat(pattern="yyyy-MM-dd")
-    private Date birthdate;
+    private LocalDate birthdate;
    
     public Courier() {
     }
 
-    public Courier(User user,  String name, String photo, Date birthdate) {
+    public Courier(User user,  String name, String photo, LocalDate birthdate) {
         this.user = user;
         this.name = name;
         this.photo = photo;
@@ -72,11 +72,11 @@ public class Courier {
         this.photo = photo;
     }
 
-    public Date getBirthdate() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
     
@@ -85,11 +85,11 @@ public class Courier {
         return "Courier [birthdate=" + birthdate + ", name=" + name + ", photo=" + photo + ", user=" + user + "]";
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

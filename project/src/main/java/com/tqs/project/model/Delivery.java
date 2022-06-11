@@ -1,9 +1,8 @@
 package com.tqs.project.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -17,8 +16,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
 @Table(name="delivery")
 @Entity
 public class Delivery {
@@ -28,26 +26,21 @@ public class Delivery {
 
     @Column(updatable = false)
     @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
+    private LocalDateTime timestamp;
 
     @Column
-    private long deliveryTimestamp;
+    private LocalDateTime deliveryTimestamp;
 
     @Embedded
     @NotNull
-    @AttributeOverrides({
-        @AttributeOverride( name = "latitude", column = @Column(name = "delivery_latitude", nullable =false)),
-        @AttributeOverride( name = "longitude", column = @Column(name = "delivery_longitude",nullable =false)),
-      })
+    @AttributeOverride(name="latitude", column=@Column(name="delivery_latitude", nullable=false))
+    @AttributeOverride(name="longitude", column=@Column(name="delivery_longitude",nullable=false))
     private Address deliveryAddress;
 
     @Embedded
     @NotNull
-    @AttributeOverrides({
-        @AttributeOverride( name = "name", column = @Column(name = "client_name", nullable =false)),
-        @AttributeOverride( name = "phoneNumber", column = @Column(name = "client_phoneNumber", nullable =false)),
-      })
+    @AttributeOverride(name="name", column=@Column(name="client_name", nullable=false))
+    @AttributeOverride(name="phoneNumber", column=@Column(name="client_phoneNumber", nullable=false))
     private DeliveryContact client;
 
     @ManyToOne
@@ -62,17 +55,7 @@ public class Delivery {
     }
     
 
-    public Delivery(long deliveryTimestamp, Address deliveryAddress, DeliveryContact client, Shop shop, Courier courier) {
-        this.deliveryTimestamp = deliveryTimestamp;
-        this.deliveryAddress = deliveryAddress;
-        this.client = client;
-        this.shop = shop;
-        this.courier = courier;
-    }
-
-    public Delivery(long id, Date timestamp, long deliveryTimestamp, Address deliveryAddress, DeliveryContact client, Shop shop, Courier courier) {
-        this.id = id;
-        this.timestamp = timestamp;
+    public Delivery(LocalDateTime deliveryTimestamp, Address deliveryAddress, DeliveryContact client, Shop shop, Courier courier) {
         this.deliveryTimestamp = deliveryTimestamp;
         this.deliveryAddress = deliveryAddress;
         this.client = client;
@@ -88,19 +71,15 @@ public class Delivery {
         this.id = id;
     }
 
-    public Date getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return this.timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public long getDeliveryTimestamp() {
+    public LocalDateTime getDeliveryTimestamp() {
         return this.deliveryTimestamp;
     }
 
-    public void setDeliveryTimestamp(long deliveryTimestamp) {
+    public void setDeliveryTimestamp(LocalDateTime deliveryTimestamp) {
         this.deliveryTimestamp = deliveryTimestamp;
     }
 
@@ -147,6 +126,6 @@ public class Delivery {
             ", shop='" + getShop() + "'" +
             ", courier='" + getCourier() + "'" +
             "}";
-    }
+    }    
     
 }

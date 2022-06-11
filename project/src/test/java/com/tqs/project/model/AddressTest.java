@@ -47,4 +47,20 @@ public class AddressTest{
 
     }
 
+    @Test
+    void testWhenCreateInvalidLatitudeSetterThenReturnBadLocationException() throws BadLocationException {
+        assertThrows(BadLocationException.class, () -> {
+            new Address().setLatitude(-150);
+        });
+
+    }
+
+    @Test
+    void testWhenCreateInvalidLongitudeSetterThenReturnBadLocationException() throws BadLocationException {
+        assertThrows(BadLocationException.class, () -> {
+            new Address().setLongitude(-280);
+        });
+
+    }
+
 }

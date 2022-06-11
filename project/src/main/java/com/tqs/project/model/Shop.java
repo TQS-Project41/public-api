@@ -1,7 +1,6 @@
 package com.tqs.project.model;
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -27,10 +26,8 @@ public class Shop {
     
     @NotNull(message = "Address é obrigatório")
     @Embedded
-    @AttributeOverrides({
-        @AttributeOverride( name = "latitude", column = @Column(name = "shop_latitude", nullable =false)),
-        @AttributeOverride( name = "longitude", column = @Column(name = "shop_longitude", nullable =false)),
-      })
+    @AttributeOverride(name="latitude", column=@Column(name="shop_latitude", nullable=false))
+    @AttributeOverride(name="longitude", column=@Column(name="shop_longitude", nullable=false))
     private Address address;
     
     @ManyToOne

@@ -14,7 +14,7 @@ public class Business {
     
     @Id
     @Column(name = "user_id")
-    private Long id;
+    private long id;
     
     @OneToOne
     @MapsId
@@ -37,12 +37,12 @@ public class Business {
         this.user = user;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
     
