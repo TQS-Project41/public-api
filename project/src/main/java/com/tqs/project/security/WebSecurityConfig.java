@@ -25,7 +25,8 @@ public class WebSecurityConfig {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests()
             .antMatchers(HttpMethod.POST, "/login").permitAll()
-            .antMatchers(HttpMethod.POST, "/couriers").permitAll()
+                .antMatchers(HttpMethod.POST, "/couriers").permitAll()
+                .antMatchers(HttpMethod.POST, "/business").permitAll()
             .anyRequest().authenticated();
 
         http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
