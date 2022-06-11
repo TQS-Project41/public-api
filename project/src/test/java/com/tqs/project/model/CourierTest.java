@@ -1,6 +1,7 @@
 package com.tqs.project.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.time.LocalDate;
 
@@ -39,5 +40,10 @@ public class CourierTest {
         assertEquals("Serras", c.getName());
         assertEquals("aaaaaaa", c.getPhoto());
         assertEquals(birthdate, c.getBirthdate());
+    }
+
+    @Test
+    void whenCallingToString_thenReturnString() {
+        assertNotEquals(null, new Courier().toString());
     }
 }

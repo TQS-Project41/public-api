@@ -41,9 +41,17 @@ public class AddressTest{
     }
 
     @Test
-    void testWhenCreateInvalidLongitudeAndLatitudeThenReturnBadLocationException() throws BadLocationException{
+    void testWhenCreateInvalidLongitudeAndLatitudeThenReturnBadLocationException() throws BadLocationException {
         assertThrows(BadLocationException.class, () -> {
-            new Address(-150,-280);
+            new Address(-150, -280);
+        });
+
+    }
+
+    @Test
+    void testWhenCreateInvalidLongitudeAndLatitude_thenReturnBadLocationException() throws BadLocationException {
+        assertThrows(BadLocationException.class, () -> {
+            new Address(-150, -280);
         });
 
     }
@@ -57,6 +65,14 @@ public class AddressTest{
     }
 
     @Test
+    void testWhenCreateInvalidPositiveLatitudeSetterThenReturnBadLocationException() throws BadLocationException {
+        assertThrows(BadLocationException.class, () -> {
+            new Address().setLatitude(150);
+        });
+
+    }
+
+    @Test
     void testWhenCreateInvalidLongitudeSetterThenReturnBadLocationException() throws BadLocationException {
         assertThrows(BadLocationException.class, () -> {
             new Address().setLongitude(-280);
@@ -65,8 +81,21 @@ public class AddressTest{
     }
 
     @Test
+    void testWhenCreateInvalidPositiveLongitudeSetterThenReturnBadLocationException() throws BadLocationException {
+        assertThrows(BadLocationException.class, () -> {
+            new Address().setLongitude(280);
+        });
+
+    }
+
+    @Test
     void whenCallingToString_thenReturnString() {
         assertNotEquals(null, new Address().toString());
+    }
+
+    @Test
+    void whenGettingDistance_thenReturnNonNegativeNumber() {
+        assertEquals(0, new Address().getDistance(new Address()));
     }
 
 }

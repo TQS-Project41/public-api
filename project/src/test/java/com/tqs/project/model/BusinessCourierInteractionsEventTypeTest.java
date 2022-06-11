@@ -1,6 +1,7 @@
 package com.tqs.project.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -27,5 +28,10 @@ public class BusinessCourierInteractionsEventTypeTest {
         assertEquals(0, b.getId());
         assertEquals(BusinessCourierInteractionsEventTypeEnum.BLOCK, b.getDescription());
 
+    }
+
+    @Test
+    void whenCallingToString_thenReturnString() {
+        assertNotEquals(null, new BusinessCourierInteractionsEventType().toString());
     }
 }

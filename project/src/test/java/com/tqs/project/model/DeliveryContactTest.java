@@ -5,6 +5,8 @@ import static org.junit.Assert.assertThrows;
 
 import com.tqs.project.exception.BadPhoneNumberException;
 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 import org.junit.jupiter.api.Test;
 public class DeliveryContactTest {
     
@@ -35,6 +37,11 @@ public class DeliveryContactTest {
             del.setPhoneNumber("aaasssaaa");
 
         });
+    }
+
+    @Test
+    void whenCallingToString_thenReturnString() {
+        assertNotEquals(null, new DeliveryContact().toString());
     }
 
 }
