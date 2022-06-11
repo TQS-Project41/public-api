@@ -105,4 +105,9 @@ import static org.assertj.core.api.Assertions.assertThat;
         Mockito.verify(rep, VerificationModeFactory.times(1)).findByEmailAndPassword("email", "password");
         Mockito.verify(rep, VerificationModeFactory.times(1)).findByEmailAndPassword("email", "password2");
     }
+
+    @Test
+    public void whenGettingAuthenticatedUser_ThenReturnsValidOptional() {
+        assertThat(service.getAuthenticatedUser().getClass()).isEqualTo(Optional.class);
+    }
  }
