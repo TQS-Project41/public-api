@@ -3,25 +3,42 @@ package com.tqs.project.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
-import com.tqs.project.Exception.BadLocationException;
-import com.tqs.project.Model.Address;
-import com.tqs.project.Model.Shop;
+import com.tqs.project.exception.BadLocationException;
+
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
 
 public class ShopTest {
     @Test
-    void testWhenCreateValidShopThenReturnShop() throws BadLocationException {
+    void whenCreateValidShopWithSetters_thenReturnShop() throws BadLocationException {
+        Address address = new Address();
+        Business business = new Business();
+
         Shop s = new Shop();
-        s.setName("Pull Aveiro");
-        s.setShop_address(new Address(50, -150));
+
         s.setId(1);
+        s.setName("Pull Aveiro");
+        s.setAddress(address);
+        s.setBusiness(business);
 
         assertEquals(1, s.getId());
         assertEquals("Pull Aveiro", s.getName());
-        assertEquals(50, s.getShop_address().getLatitude(),0.001);
-        assertEquals(-150, s.getShop_address().getLongitude(),0.001);
+        assertEquals(address, s.getAddress());
+        assertEquals(business, s.getBusiness());
+    }
 
+    @Test
+    void whenCreateValidShopWithConstructor_thenReturnShop() throws BadLocationException {
+        Address address = new Address();
+        Business business = new Business();
+
+        Shop s = new Shop("Pull Aveiro", address, business);
+
+        assertEquals(0, s.getId());
+        assertEquals("Pull Aveiro", s.getName());
+        assertEquals(address, s.getAddress());
+        assertEquals(business, s.getBusiness());
     }
 
     @Test
@@ -29,10 +46,12 @@ public class ShopTest {
         Shop s = new Shop();
         s.setName("Pull Aveiro");
         assertThrows(BadLocationException.class, () -> {
-            s.setShop_address(new Address(50, -350));;
+            s.setAddress(new Address(50, -350));;
         });
-       
-        
+    }
 
+    @Test
+    void whenCallingToString_thenReturnString() {
+        assertNotEquals(null, new Shop().toString());
     }
 }

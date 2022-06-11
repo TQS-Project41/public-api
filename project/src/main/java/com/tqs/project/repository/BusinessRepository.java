@@ -1,9 +1,9 @@
-package com.tqs.project.Repository;
-
-import com.tqs.project.Model.Business;
+package com.tqs.project.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import com.tqs.project.model.Business;
 
 @Repository
 public interface BusinessRepository extends JpaRepository<Business,Long>  {
