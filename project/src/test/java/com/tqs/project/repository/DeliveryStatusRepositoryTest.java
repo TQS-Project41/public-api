@@ -39,8 +39,6 @@ public class DeliveryStatusRepositoryTest {
     @Autowired
     private TestEntityManager entityManager;
 
-    
-
     @Autowired
     private DeliveryStatusRepository rep;
 
@@ -53,8 +51,6 @@ public class DeliveryStatusRepositoryTest {
         
         assertThat(res).isPresent().contains(b1);
     }
-
-    
 
     @Test
     void testWhenFindByInvalidId_thenReturnNull() {

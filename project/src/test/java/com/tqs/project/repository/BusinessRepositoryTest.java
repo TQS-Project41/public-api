@@ -53,7 +53,7 @@ public class BusinessRepositoryTest {
         Business x = new Business();
         User user = new User();
         user.setPassword("xxxx");
-        user.setUsername("username");
+        user.setEmail("username");
         x.setUser(user);
         repUser.saveAndFlush(user);
         entityManager.persistAndFlush(x);
@@ -78,7 +78,7 @@ public class BusinessRepositoryTest {
         Business b1 = new Business();
         User user = new User();
         user.setPassword("xxxx");
-        user.setUsername("username");
+        user.setEmail("username");
         b1.setUser(user);
         repUser.saveAndFlush(user);
         entityManager.persistAndFlush(b1);
@@ -86,7 +86,7 @@ public class BusinessRepositoryTest {
         Business b2 = new Business();
         User user1 = new User();
         user1.setPassword("xxxx");
-        user1.setUsername("serras");
+        user1.setEmail("serras");
         b2.setUser(user1);
         repUser.saveAndFlush(user1);
         entityManager.persistAndFlush(b2);

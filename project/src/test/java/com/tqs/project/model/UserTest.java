@@ -12,7 +12,7 @@ public class UserTest {
         User u = new User("x","xxxx");
 
         assertEquals(0, u.getId());
-        assertEquals("x", u.getUsername());
+        assertEquals("x", u.getEmail());
         assertEquals("xxxx", u.getPassword());
 
     }
@@ -22,11 +22,11 @@ public class UserTest {
 
         User u = new User();
         u.setId(1);
-        u.setUsername("x");
+        u.setEmail("x");
         u.setPassword("xxxx");
 
-        assertEquals(0, u.getId());
-        assertEquals("x", u.getUsername());
+        assertEquals(1, u.getId());
+        assertEquals("x", u.getEmail());
         assertEquals("xxxx", u.getPassword());
        
     }

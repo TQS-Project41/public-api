@@ -47,7 +47,7 @@ public class UserRepositoryTest {
     void testWhenCreateUserAndFindById_thenReturnSameUser() {
         User x = new User();
         x.setPassword("xxxx");
-        x.setUsername("username");
+        x.setEmail("username");
 
         entityManager.persistAndFlush(x);
         Optional<User> res = rep.findById(x.getId());
@@ -70,9 +70,9 @@ public class UserRepositoryTest {
         User  b1 = new User();
         User  b2 = new User();
         b1.setPassword("xxxx");
-        b1.setUsername("username");
+        b1.setEmail("username");
         b2.setPassword("aaa");
-        b2.setUsername("ccc");
+        b2.setEmail("ccc");
         entityManager.persistAndFlush(b1);
         entityManager.persistAndFlush(b2);
 
@@ -86,8 +86,8 @@ public class UserRepositoryTest {
                 .contains(b1.getId(), b2.getId());
         assertThat(all)
                 .hasSize(2)
-                .extracting(User::getUsername)
-                .contains(b1.getUsername(), b2.getUsername());
+                .extracting(User::getEmail)
+                .contains(b1.getEmail(), b2.getEmail());
     }
 
     @Test

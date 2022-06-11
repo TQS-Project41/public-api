@@ -51,7 +51,7 @@ public class CourierRepositoryTest {
         Courier x = new Courier();
         User user = new User();
         user.setPassword("xxxx");
-        user.setUsername("username");
+        user.setEmail("username");
         x.setUser(user);
         x.setName("SERRAS");
         repUser.saveAndFlush(user);
@@ -76,7 +76,7 @@ public class CourierRepositoryTest {
         Courier x = new Courier();
         User user = new User();
         user.setPassword("xxxx");
-        user.setUsername("username");
+        user.setEmail("username");
         x.setUser(user);
         repUser.saveAndFlush(user);
         Courier x1 = new Courier();
@@ -84,7 +84,7 @@ public class CourierRepositoryTest {
         x.setName("SERRAS");
         x1.setName("Alex");
         user1.setPassword("xxxx");
-        user1.setUsername("aaaa");
+        user1.setEmail("aaaa");
         x1.setUser(user1);
         repUser.saveAndFlush(user1);
 

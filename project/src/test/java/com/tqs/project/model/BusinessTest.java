@@ -19,9 +19,9 @@ public class BusinessTest {
         Set<Shop> shops= new HashSet<>();
         shops.add(s1);
         shops.add(s);
-        u.setUsername("Serras");
+        u.setEmail("Serras");
         b.setUser(u);
 
-        assertEquals("Serras", b.getUser().getUsername());
+        assertEquals("Serras", b.getUser().getEmail());
     }
 }

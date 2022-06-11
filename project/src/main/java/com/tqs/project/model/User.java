@@ -16,20 +16,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(unique = true)
+    @NotNull(message = "Email é obrigatório")
+    private String email;
+
     @Column
     @NotNull(message = "Password é obrigatório")
     private String password;
-    
-    @Column(unique=true)
-    @NotNull(message = "Username é obrigatório")
-    private String username;
 
     public User() {
     }
 
-    public User(String password, String username) {
+    public User(String email, String password) {
+        this.email = email;
         this.password = password;
-        this.username = username;
     }
 
     public long getId() {
@@ -48,17 +48,17 @@ public class User {
         return password;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
     public String toString() {
-        return "User [id=" + id +  ", username=" + username + "]";
+        return "User [id=" + id +  ", username=" + email + "]";
     }
 
 }

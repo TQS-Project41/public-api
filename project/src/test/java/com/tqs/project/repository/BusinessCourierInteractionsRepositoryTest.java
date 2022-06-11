@@ -65,7 +65,7 @@ public class BusinessCourierInteractionsRepositoryTest {
         x.setCourier(c);
         User user = new User();
         user.setPassword("xxxx");
-        user.setUsername("username");
+        user.setEmail("username");
         Business b = new Business();
         BusinessCourierInteractionsEventType bus= new BusinessCourierInteractionsEventType(BusinessCourierInteractionsEventTypeEnum.ACCEPT);
         x.setEvent(bus);
@@ -107,10 +107,10 @@ public class BusinessCourierInteractionsRepositoryTest {
         c1.setName("serras");
         User user1 = new User();
         user1.setPassword("xxxx");
-        user1.setUsername("aaaaa");
+        user1.setEmail("aaaaa");
         User user = new User();
         user.setPassword("xxxx");
-        user.setUsername("username");
+        user.setEmail("username");
         Business b = new Business();
         Business b1 = new Business();
 

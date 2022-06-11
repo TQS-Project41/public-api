@@ -58,7 +58,7 @@ public class DeliveryRepositoryTest {
         Business b1 = new Business();
         User user = new User();
         user.setPassword("xxxx");
-        user.setUsername("username");
+        user.setEmail("username");
         b1.setUser(user);
         repUser.saveAndFlush(user);
         entityManager.persistAndFlush(b1);
@@ -73,7 +73,7 @@ public class DeliveryRepositoryTest {
         Courier cor = new Courier();
         User user1 = new User();
         user1.setPassword("xxxx");
-        user1.setUsername("aaaa");
+        user1.setEmail("aaaa");
         cor.setUser(user);
         cor.setName("SERRAS");
         repUser.saveAndFlush(user1);
@@ -106,7 +106,7 @@ public class DeliveryRepositoryTest {
         Business b1 = new Business();
         User user = new User();
         user.setPassword("xxxx");
-        user.setUsername("username");
+        user.setEmail("username");
         b1.setUser(user);
         repUser.saveAndFlush(user);
         entityManager.persistAndFlush(b1);
@@ -121,7 +121,7 @@ public class DeliveryRepositoryTest {
         Courier cor = new Courier();
         User user1 = new User();
         user1.setPassword("xxxx");
-        user1.setUsername("aaaa");
+        user1.setEmail("aaaa");
         cor.setUser(user);
         cor.setName("SERRAS");
         repUser.saveAndFlush(user1);
