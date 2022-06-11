@@ -4,14 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.PersistenceException;
-import javax.validation.ConstraintViolationException;
 
-import com.tqs.project.Model.BusinessCourierInteractionsEventType;
-import com.tqs.project.Model.BusinessCourierInteractionsEventTypeEnum;
-import com.tqs.project.Model.Courier;
-import com.tqs.project.Model.User;
-import com.tqs.project.Repository.CourierRepository;
-import com.tqs.project.Repository.UserRepository;
+import com.tqs.project.model.Courier;
+import com.tqs.project.model.User;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 
@@ -32,10 +28,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class CourierRepositoryTest {
     
     @Container
-    public static MySQLContainer container = new MySQLContainer()
-        .withUsername("user")
-        .withPassword("user")
-        .withDatabaseName("tqs_41");
+    public static MySQLContainer<?> container = new MySQLContainer<>("mysql");
 
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {

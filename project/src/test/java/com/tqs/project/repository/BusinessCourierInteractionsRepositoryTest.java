@@ -4,18 +4,14 @@ import java.util.Optional;
 
 import javax.persistence.PersistenceException;
 
-import com.tqs.project.Exception.UserAlreadyAssignedException;
-import com.tqs.project.Model.Business;
-import com.tqs.project.Model.BusinessCourierInteractions;
-import com.tqs.project.Model.BusinessCourierInteractionsEventType;
-import com.tqs.project.Model.BusinessCourierInteractionsEventTypeEnum;
-import com.tqs.project.Model.Courier;
-import com.tqs.project.Model.User;
-import com.tqs.project.Repository.BusinessCourierInteractionsEventTypeRepository;
-import com.tqs.project.Repository.BusinessCourierInteractionsRepository;
-import com.tqs.project.Repository.BusinessRepository;
-import com.tqs.project.Repository.CourierRepository;
-import com.tqs.project.Repository.UserRepository;
+import com.tqs.project.exception.UserAlreadyAssignedException;
+import com.tqs.project.model.Business;
+import com.tqs.project.model.BusinessCourierInteractions;
+import com.tqs.project.model.BusinessCourierInteractionsEventType;
+import com.tqs.project.model.BusinessCourierInteractionsEventTypeEnum;
+import com.tqs.project.model.Courier;
+import com.tqs.project.model.User;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 

@@ -5,10 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.tqs.project.Model.BusinessCourierInteractions;
-import com.tqs.project.Model.BusinessCourierInteractionsEventType;
-import com.tqs.project.Model.BusinessCourierInteractionsEventTypeEnum;
-
 import org.junit.jupiter.api.Test;
 
 public class BusinessCourierInteractionsEventTypeTest {

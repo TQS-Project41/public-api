@@ -2,12 +2,6 @@ package com.tqs.project.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.tqs.project.Model.Business;
-import com.tqs.project.Model.BusinessCourierInteractions;
-import com.tqs.project.Model.BusinessCourierInteractionsEventType;
-import com.tqs.project.Model.BusinessCourierInteractionsEventTypeEnum;
-import com.tqs.project.Model.Courier;
-
 import org.junit.jupiter.api.Test;
 
 

@@ -3,8 +3,7 @@ package com.tqs.project.model;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.tqs.project.Exception.BadLocationException;
-import com.tqs.project.Model.Address;
+import com.tqs.project.exception.BadLocationException;
 
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +26,7 @@ public class AddressTest{
     @Test
     void testWhenCreateInvalidLatitudeThenReturnBadLocationException() throws BadLocationException{
         assertThrows(BadLocationException.class, () -> {
-            Address x = new Address(-150,-180);
+            new Address(-150,-180);
         });
 
     }
@@ -35,7 +34,7 @@ public class AddressTest{
     @Test
     void testWhenCreateInvalidLongitudeThenReturnBadLocationException() throws BadLocationException{
         assertThrows(BadLocationException.class, () -> {
-            Address x = new Address(0,-280);
+            new Address(0,-280);
         });
 
     }
@@ -43,16 +42,9 @@ public class AddressTest{
     @Test
     void testWhenCreateInvalidLongitudeAndLatitudeThenReturnBadLocationException() throws BadLocationException{
         assertThrows(BadLocationException.class, () -> {
-            Address x = new Address(-150,-280);
+            new Address(-150,-280);
         });
 
-    }
-
-
-
-    @Test
-    void testWhenWeHaveAddressThenCalculateGetDistance() {
-        //TEST A FAZER
     }
 
 }

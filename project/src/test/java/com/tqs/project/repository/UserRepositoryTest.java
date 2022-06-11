@@ -6,8 +6,8 @@ import java.util.Optional;
 
 import javax.validation.ConstraintViolationException;
 
-import com.tqs.project.Model.User;
-import com.tqs.project.Repository.UserRepository;
+import com.tqs.project.model.User;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 

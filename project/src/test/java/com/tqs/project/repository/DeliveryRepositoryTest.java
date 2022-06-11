@@ -4,21 +4,16 @@ import java.util.Optional;
 
 import javax.validation.ConstraintViolationException;
 
-import com.tqs.project.Exception.BadLocationException;
-import com.tqs.project.Exception.BadPhoneNumberException;
-import com.tqs.project.Model.Address;
-import com.tqs.project.Model.Business;
-import com.tqs.project.Model.BusinessCourierInteractionsEventType;
-import com.tqs.project.Model.BusinessCourierInteractionsEventTypeEnum;
-import com.tqs.project.Model.Courier;
-import com.tqs.project.Model.Delivery;
-import com.tqs.project.Model.DeliveryContact;
-import com.tqs.project.Model.Shop;
-import com.tqs.project.Model.User;
-import com.tqs.project.Repository.BusinessRepository;
-import com.tqs.project.Repository.DeliveryRepository;
-import com.tqs.project.Repository.ShopRepository;
-import com.tqs.project.Repository.UserRepository;
+import com.tqs.project.exception.BadLocationException;
+import com.tqs.project.exception.BadPhoneNumberException;
+import com.tqs.project.model.Address;
+import com.tqs.project.model.Business;
+import com.tqs.project.model.Courier;
+import com.tqs.project.model.Delivery;
+import com.tqs.project.model.DeliveryContact;
+import com.tqs.project.model.Shop;
+import com.tqs.project.model.User;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 
@@ -39,10 +34,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class DeliveryRepositoryTest {
     @Container
-    public static MySQLContainer container = new MySQLContainer()
-        .withUsername("user")
-        .withPassword("user")
-        .withDatabaseName("tqs_41");
+    public static MySQLContainer<?> container = new MySQLContainer<>("mysql");
 
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {
@@ -56,14 +48,9 @@ public class DeliveryRepositoryTest {
 
     @Autowired
     private TestEntityManager entityManager;
-  
-    @Autowired
-    private ShopRepository shopRep;
 
     @Autowired
     private UserRepository repUser;
-    @Autowired
-    private BusinessRepository repBusi;
 
     @Test
     void testWhenCreateDeliveryAndFindById_thenReturnSameDelivery() throws BadLocationException, BadPhoneNumberException {
@@ -78,7 +65,7 @@ public class DeliveryRepositoryTest {
 
         Shop x = new Shop();
         x.setName("Continente");
-        x.setShop_address(new Address(50.0,-50.0));
+        x.setAddress(new Address(50.0,-50.0));
         x.setBusiness(b1);
         repUser.saveAndFlush(user);
         entityManager.persistAndFlush(x);
@@ -95,7 +82,7 @@ public class DeliveryRepositoryTest {
         Delivery del = new Delivery();
         del.setShop(x);
         del.setCourier(cor);
-        del.setDelivery_address(new Address(30.0,-100.0));
+        del.setDeliveryAddress(new Address(30.0,-100.0));
         del.setClient(new DeliveryContact("serras", "912321123"));
         entityManager.persistAndFlush(del);
         Optional<Delivery> res = rep.findById(del.getId());
@@ -126,7 +113,7 @@ public class DeliveryRepositoryTest {
 
         Shop x = new Shop();
         x.setName("Continente");
-        x.setShop_address(new Address(50.0,-50.0));
+        x.setAddress(new Address(50.0,-50.0));
         x.setBusiness(b1);
         repUser.saveAndFlush(user);
         entityManager.persistAndFlush(x);
@@ -143,14 +130,14 @@ public class DeliveryRepositoryTest {
         Delivery del = new Delivery();
         del.setShop(x);
         del.setCourier(cor);
-        del.setDelivery_address(new Address(30.0,-100.0));
+        del.setDeliveryAddress(new Address(30.0,-100.0));
         del.setClient(new DeliveryContact("serras", "912321123"));
         entityManager.persistAndFlush(del);
 
         Delivery del1 = new Delivery();
         del1.setCourier(cor);
         del1.setShop(x);
-        del1.setDelivery_address(new Address(40.0,-100.0));
+        del1.setDeliveryAddress(new Address(40.0,-100.0));
         del1.setClient(new DeliveryContact("serras", "912321323"));
         entityManager.persistAndFlush(del1);
 

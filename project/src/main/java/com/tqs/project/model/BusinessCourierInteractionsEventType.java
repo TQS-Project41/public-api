@@ -1,9 +1,4 @@
-package com.tqs.project.Model;
-
-import lombok.Data;
-
-import java.util.HashSet;
-import java.util.Set;
+package com.tqs.project.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +7,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -28,39 +22,16 @@ public class BusinessCourierInteractionsEventType {
     @Column
     @NotNull(message = "Description é obrigatório")
     private BusinessCourierInteractionsEventTypeEnum description;
-
-    @OneToMany(mappedBy="event")
-    private Set<BusinessCourierInteractions> businessCourierInteractions;
     
     public BusinessCourierInteractionsEventType() {
-        this.businessCourierInteractions=new HashSet<>();
     }
     
     public BusinessCourierInteractionsEventType(BusinessCourierInteractionsEventTypeEnum description) {
         this.description = description;
-        this.businessCourierInteractions=new HashSet<>();
-
-    }
-
-    
-    public BusinessCourierInteractionsEventType(
-             BusinessCourierInteractionsEventTypeEnum description,
-            Set<BusinessCourierInteractions> businessCourierInteractions) {
-        this.description = description;
-        this.businessCourierInteractions = businessCourierInteractions;
     }
 
     public long getId() {
         return id;
-    }
-
-    
-    public Set<BusinessCourierInteractions> getBusinessCourierInteractions() {
-        return businessCourierInteractions;
-    }
-
-    public void setBusinessCourierInteractions(Set<BusinessCourierInteractions> businessCourierInteractions) {
-        this.businessCourierInteractions = businessCourierInteractions;
     }
 
     public void setId(long id) {

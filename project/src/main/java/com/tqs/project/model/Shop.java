@@ -1,25 +1,19 @@
-package com.tqs.project.Model;
-import lombok.Data;
-
-import java.sql.Timestamp;
-import java.util.Set;
+package com.tqs.project.model;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 import javax.persistence.Table;
+
 @Table(name="shop")
 @Entity
 public class Shop {
@@ -37,81 +31,61 @@ public class Shop {
         @AttributeOverride( name = "latitude", column = @Column(name = "shop_latitude", nullable =false)),
         @AttributeOverride( name = "longitude", column = @Column(name = "shop_longitude", nullable =false)),
       })
-    private Address shop_address;
-
-    @OneToMany(mappedBy="shop")
-    private Set<Delivery> delivery;
+    private Address address;
     
-      @ManyToOne
-      @JoinColumn(name="business_id", nullable=false)
-      private Business business;
-  
-  
-      
+    @ManyToOne
+    @JoinColumn(name="business_id", nullable=false)
+    private Business business;
     
     public Shop() {
     }
 
-
-    public Shop(String name,
-            Address shop_address, Business business,
-            Set<Delivery> delivery) {
+    public Shop(String name, Address address, Business business) {
         this.name = name;
-        this.shop_address = shop_address;
+        this.address = address;
         this.business = business;
-        this.delivery = delivery;
     }
-
 
     public long getId() {
-        return id;
+        return this.id;
     }
-
 
     public void setId(long id) {
         this.id = id;
     }
 
-
     public String getName() {
-        return name;
+        return this.name;
     }
-
 
     public void setName(String name) {
         this.name = name;
     }
 
-
-    public Address getShop_address() {
-        return shop_address;
+    public Address getAddress() {
+        return this.address;
     }
 
-
-    public void setShop_address(Address shop_address) {
-        this.shop_address = shop_address;
+    public void setAddress(Address address) {
+        this.address = address;
     }
-
 
     public Business getBusiness() {
-        return business;
+        return this.business;
     }
-
 
     public void setBusiness(Business business) {
         this.business = business;
     }
 
-
-    public Set<Delivery> getDelivery() {
-        return delivery;
+    @Override
+    public String toString() {
+        return "{" +
+            " id='" + getId() + "'" +
+            ", name='" + getName() + "'" +
+            ", address='" + getAddress() + "'" +
+            ", business='" + getBusiness() + "'" +
+            "}";
     }
 
-
-    public void setDelivery(Set<Delivery> delivery) {
-        this.delivery = delivery;
-    }
-
-
-    
 }

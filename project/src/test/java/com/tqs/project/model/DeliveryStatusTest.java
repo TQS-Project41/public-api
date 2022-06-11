@@ -2,9 +2,6 @@ package com.tqs.project.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.tqs.project.Model.DeliveryStatus;
-import com.tqs.project.Model.DeliveryStatusEnum;
-
 import org.junit.jupiter.api.Test;
 
 public class DeliveryStatusTest {

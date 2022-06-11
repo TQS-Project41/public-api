@@ -1,4 +1,4 @@
-package com.tqs.project.Model;
+package com.tqs.project.model;
 
 public enum BusinessCourierInteractionsEventTypeEnum {
     APPLY,REFUSE,ACCEPT,BLOCK;

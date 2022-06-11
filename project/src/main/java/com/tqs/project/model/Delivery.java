@@ -1,7 +1,5 @@
-package com.tqs.project.Model;
-import lombok.Data;
+package com.tqs.project.model;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.AttributeOverride;
@@ -34,7 +32,7 @@ public class Delivery {
     private Date timestamp;
 
     @Column
-    private long delivery_timestamp;
+    private long deliveryTimestamp;
 
     @Embedded
     @NotNull
@@ -42,7 +40,7 @@ public class Delivery {
         @AttributeOverride( name = "latitude", column = @Column(name = "delivery_latitude", nullable =false)),
         @AttributeOverride( name = "longitude", column = @Column(name = "delivery_longitude",nullable =false)),
       })
-    private Address delivery_address;
+    private Address deliveryAddress;
 
     @Embedded
     @NotNull
@@ -64,52 +62,58 @@ public class Delivery {
     }
     
 
-    public Delivery(long delivery_timestamp, Address delivery_address, DeliveryContact client, Shop shop,
-            Courier courier) {
-        this.delivery_timestamp = delivery_timestamp;
-        this.delivery_address = delivery_address;
+    public Delivery(long deliveryTimestamp, Address deliveryAddress, DeliveryContact client, Shop shop, Courier courier) {
+        this.deliveryTimestamp = deliveryTimestamp;
+        this.deliveryAddress = deliveryAddress;
         this.client = client;
         this.shop = shop;
         this.courier = courier;
     }
 
-
-    public long getId() {
-        return id;
+    public Delivery(long id, Date timestamp, long deliveryTimestamp, Address deliveryAddress, DeliveryContact client, Shop shop, Courier courier) {
+        this.id = id;
+        this.timestamp = timestamp;
+        this.deliveryTimestamp = deliveryTimestamp;
+        this.deliveryAddress = deliveryAddress;
+        this.client = client;
+        this.shop = shop;
+        this.courier = courier;
     }
 
+    public long getId() {
+        return this.id;
+    }
 
     public void setId(long id) {
         this.id = id;
     }
 
-
     public Date getTimestamp() {
-        return timestamp;
+        return this.timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 
-    public long getDelivery_timestamp() {
-        return delivery_timestamp;
+    public long getDeliveryTimestamp() {
+        return this.deliveryTimestamp;
     }
 
-    public void setDelivery_timestamp(long delivery_timestamp) {
-        this.delivery_timestamp = delivery_timestamp;
+    public void setDeliveryTimestamp(long deliveryTimestamp) {
+        this.deliveryTimestamp = deliveryTimestamp;
     }
 
-    public Address getDelivery_address() {
-        return delivery_address;
+    public Address getDeliveryAddress() {
+        return this.deliveryAddress;
     }
 
-    public void setDelivery_address(Address delivery_address) {
-        this.delivery_address = delivery_address;
+    public void setDeliveryAddress(Address deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
     }
 
     public DeliveryContact getClient() {
-        return client;
+        return this.client;
     }
 
     public void setClient(DeliveryContact client) {
@@ -117,7 +121,7 @@ public class Delivery {
     }
 
     public Shop getShop() {
-        return shop;
+        return this.shop;
     }
 
     public void setShop(Shop shop) {
@@ -125,21 +129,24 @@ public class Delivery {
     }
 
     public Courier getCourier() {
-        return courier;
+        return this.courier;
     }
 
     public void setCourier(Courier courier) {
         this.courier = courier;
     }
 
-
     @Override
     public String toString() {
-        return "Delivery [client=" + client + ", courier=" + courier + ", delivery_address=" + delivery_address
-                + ", delivery_timestamp=" + delivery_timestamp + ", id=" + id + ", shop=" + shop + ", timestamp="
-                + timestamp + "]";
+        return "{" +
+            " id='" + getId() + "'" +
+            ", timestamp='" + getTimestamp() + "'" +
+            ", deliveryTimestamp='" + getDeliveryTimestamp() + "'" +
+            ", deliveryAddress='" + getDeliveryAddress() + "'" +
+            ", client='" + getClient() + "'" +
+            ", shop='" + getShop() + "'" +
+            ", courier='" + getCourier() + "'" +
+            "}";
     }
-
-    
     
 }

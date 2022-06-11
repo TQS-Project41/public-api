@@ -1,4 +1,4 @@
-package com.tqs.project.Model;
+package com.tqs.project.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,6 +42,10 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getUsername() {

@@ -1,6 +1,4 @@
-package com.tqs.project.Model;
-
-import lombok.Data;
+package com.tqs.project.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +10,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 import javax.persistence.Table;
+
 @Table(name="delivery_status")
 @Entity
 public class DeliveryStatus {
@@ -25,15 +24,12 @@ public class DeliveryStatus {
     private DeliveryStatusEnum description;
 
     public DeliveryStatus() {
-        }
+    }
 
     public DeliveryStatus(DeliveryStatusEnum description) {
         this.description = description;
     }
     
-
-    
-
     public long getId() {
         return id;
     }
@@ -55,7 +51,4 @@ public class DeliveryStatus {
         return "DeliveryStatus [description=" + description + ", id=" + id + "]";
     }
     
-    
-
-
 }
