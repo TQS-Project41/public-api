@@ -7,15 +7,15 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.tqs.project.model.User;
 import com.tqs.project.security.JwtUtils;
 import com.tqs.project.service.UserService;
 
-@Controller
+@RestController
 public class AuthController {
 
   @Autowired
