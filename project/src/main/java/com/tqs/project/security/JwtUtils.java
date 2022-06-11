@@ -5,10 +5,7 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
-import com.tqs.project.model.User;
 
 import io.jsonwebtoken.*;
 
@@ -21,18 +18,6 @@ public class JwtUtils {
 
   @Value("${generic.app.jwtExpirationMs}")
   private int jwtExpirationMs;
-
-  public String generateJwtToken(Authentication authentication) {
-
-    User userPrincipal = (User) authentication.getPrincipal();
-
-    return Jwts.builder()
-        .setSubject(String.valueOf(userPrincipal.getId()))
-        .setIssuedAt(new Date())
-        .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-        .signWith(SignatureAlgorithm.HS512, jwtSecret)
-        .compact();
-  }
 
   public String generateJwtToken(long id) {
 

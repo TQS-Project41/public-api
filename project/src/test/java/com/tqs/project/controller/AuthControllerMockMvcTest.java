@@ -63,5 +63,24 @@ public class AuthControllerMockMvcTest {
     verify(jwtUtils, VerificationModeFactory.times(1)).generateJwtToken(any(long.class));
   }
 
+  @Test
+  void givenUserDoesNotExist_whenLoggingIn_thenReturnsHttpNotFound() {
+    when(userService.getByEmailAndPassword(any(String.class), any(String.class))).thenReturn(Optional.empty());
+
+    Map<String, String> body = new HashMap<>();
+    body.put("email", "pedro.dld@ua.pt");
+    body.put("password", "password");
+
+    RestAssuredMockMvc.given().params(body)
+        .contentType("application/json")
+        .when()
+        .post("/login")
+        .then()
+        .statusCode(404);
+
+    verify(userService, VerificationModeFactory.times(1)).getByEmailAndPassword(any(String.class), any(String.class));
+
+  }
+
   
 }

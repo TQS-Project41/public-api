@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(MockitoExtension.class)
  class UserServiceTest {
 
-    @Mock( lenient = true)
+    @Mock(lenient = true)
     private UserRepository rep;
 
     @InjectMocks
