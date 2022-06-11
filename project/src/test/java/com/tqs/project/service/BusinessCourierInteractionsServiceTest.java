@@ -1,6 +1,5 @@
 package com.tqs.project.service;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,15 +8,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.AfterDomainEventPublication;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
-import com.tqs.project.Model.BusinessCourierInteractions;
-import com.tqs.project.Repository.BusinessCourierInteractionsRepository;
-import com.tqs.project.Service.BusinessCourierInteractionsService;
+import com.tqs.project.model.BusinessCourierInteractions;
+import com.tqs.project.repository.BusinessCourierInteractionsRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,19 +34,26 @@ import static org.assertj.core.api.Assertions.assertThat;
         BusinessCourierInteractions b2 = new BusinessCourierInteractions();
         b2.setId(222L);
 
-        List<BusinessCourierInteractions> allBusinessCourierInteractions = Arrays.asList(b1, b2);
-
         Mockito.when(rep.findById(111L)).thenReturn(Optional.of(b1));
-        Mockito.when(rep.findAll()).thenReturn(allBusinessCourierInteractions);
         Mockito.when(rep.findById(-99L)).thenReturn(Optional.empty());
     }
 
+    @Test
+    void whenSaveInteraction_thenReturnInteraction() {
+        BusinessCourierInteractions interaction = new BusinessCourierInteractions();
+        Mockito.when(rep.save(interaction)).thenReturn(interaction);
+
+        assertThat(service.save(interaction)).isEqualTo(interaction);
+
+        Mockito.verify(rep, VerificationModeFactory.times(1)).save(interaction);
+    }
 
     @Test
-     void whenSearchBusinessCourierInteractionsId_thenBusinessCourierInteractionsShouldBeFound() {
-        Optional<BusinessCourierInteractions> found = service.getBusinessCourierInteractionsById( 111L );
+    void whenSearchBusinessCourierInteractionsId_thenBusinessCourierInteractionsShouldBeFound() {
+        Optional<BusinessCourierInteractions> found = service.getById(111L);
         BusinessCourierInteractions b = null;
-        if (found.isPresent()) b = found.get();
+        if (found.isPresent())
+            b = found.get();
 
         assertThat(b.getId()).isEqualTo(111L);
 
@@ -60,31 +62,15 @@ import static org.assertj.core.api.Assertions.assertThat;
     }
 
     @Test
-     void whenSearchInvalidId_thenBusinessCourierInteractionsShouldNotBeFound() {
-        Optional<BusinessCourierInteractions> found = service.getBusinessCourierInteractionsById(-99L);
+    void whenSearchInvalidId_thenBusinessCourierInteractionsShouldNotBeFound() {
+        Optional<BusinessCourierInteractions> found = service.getById(-99L);
         BusinessCourierInteractions b = null;
-        if (found.isPresent()) b = found.get();
+        if (found.isPresent())
+            b = found.get();
 
         // verify if FindById is called once
         Mockito.verify(rep, VerificationModeFactory.times(1)).findById(Mockito.anyLong());
 
         assertThat(b).isNull();
-    }
-
-
-    @Test
-     void whengetAll_thenReturn2Records() {
-        BusinessCourierInteractions b1 = new BusinessCourierInteractions();
-        b1.setId(111L);
-
-        BusinessCourierInteractions b2 = new BusinessCourierInteractions();
-        b2.setId(222L);
-
-        List<BusinessCourierInteractions> allBusinessCourierInteractionss = service.getAllBusinessCourierInteractions();
-
-        // verify if FindAllBusinessCourierInteractionss is called once
-        Mockito.verify(rep, VerificationModeFactory.times(1)).findAll();
-
-        assertThat(allBusinessCourierInteractionss).hasSize(2).extracting(BusinessCourierInteractions::getId).contains(b1.getId(), b2.getId());
     }
  }

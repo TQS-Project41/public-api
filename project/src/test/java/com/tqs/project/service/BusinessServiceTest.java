@@ -13,10 +13,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.tqs.project.Model.Business;
-import com.tqs.project.Model.User;
-import com.tqs.project.Repository.BusinessRepository;
-import com.tqs.project.Service.BusinessService;
+import com.tqs.project.model.Business;
+import com.tqs.project.model.User;
+import com.tqs.project.repository.BusinessRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -45,6 +44,16 @@ import static org.assertj.core.api.Assertions.assertThat;
         Mockito.when(rep.findById(b1.getId())).thenReturn(Optional.of(b1));
         Mockito.when(rep.findAll()).thenReturn(allBusiness);
         Mockito.when(rep.findById(-99L)).thenReturn(Optional.empty());
+    }
+
+    @Test
+    void whenSaveBusiness_thenReturnBusiness() {
+        Business business = new Business();
+        Mockito.when(rep.save(business)).thenReturn(business);
+
+        assertThat(service.save(business)).isEqualTo(business);
+
+        Mockito.verify(rep, VerificationModeFactory.times(1)).save(business);
     }
 
 

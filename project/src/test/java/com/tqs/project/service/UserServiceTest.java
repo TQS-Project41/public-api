@@ -13,9 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.tqs.project.Model.User;
-import com.tqs.project.Repository.UserRepository;
-import com.tqs.project.Service.UserService;
+import com.tqs.project.model.User;
+import com.tqs.project.repository.UserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -45,6 +44,15 @@ import static org.assertj.core.api.Assertions.assertThat;
         Mockito.when(rep.findById(-99L)).thenReturn(Optional.empty());
     }
 
+    @Test
+    void whenSaveUser_thenReturnUser() {
+        User user = new User();
+        Mockito.when(rep.save(user)).thenReturn(user);
+
+        assertThat(service.save(user)).isEqualTo(user);
+
+        Mockito.verify(rep, VerificationModeFactory.times(1)).save(user);
+    }
 
     @Test
      void whenSearchUserId_thenUserShouldBeFound() {
@@ -83,6 +91,6 @@ import static org.assertj.core.api.Assertions.assertThat;
         // verify if FindAllUsers is called once
         Mockito.verify(rep, VerificationModeFactory.times(1)).findAll();
 
-        assertThat(allUsers).hasSize(4).extracting(User::getUsername).contains(alex.getUsername(), john.getUsername(), peter.getUsername(), gon.getUsername());
+        assertThat(allUsers).hasSize(4).extracting(User::getEmail).contains(alex.getEmail(), john.getEmail(), peter.getEmail(), gon.getEmail());
     }
  }
