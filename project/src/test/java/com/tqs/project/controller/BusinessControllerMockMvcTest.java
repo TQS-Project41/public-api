@@ -26,7 +26,7 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 
 @WebMvcTest(value = BusinessController.class, excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = WebSecurityConfig.class)})
 @AutoConfigureMockMvc(addFilters = false)
-public class BusinessControllerMockMvcTest {
+class BusinessControllerMockMvcTest {
   @Autowired
   private MockMvc mvc;
 

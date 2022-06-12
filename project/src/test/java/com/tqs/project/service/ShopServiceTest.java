@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @ExtendWith(MockitoExtension.class)
- class ShopServiceTest {
+class ShopServiceTest {
 
     @Mock( lenient = true)
     private ShopRepository rep;

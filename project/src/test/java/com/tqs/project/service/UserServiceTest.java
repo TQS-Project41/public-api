@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @ExtendWith(MockitoExtension.class)
- class UserServiceTest {
+class UserServiceTest {
 
     @Mock(lenient = true)
     private UserRepository rep;
@@ -55,7 +55,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     }
 
     @Test
-     void whenSearchUserId_thenUserShouldBeFound() {
+    void whenSearchUserId_thenUserShouldBeFound() {
         Optional<User> found = service.getUserById( 111L );
         User user = null;
         if (found.isPresent()) user = found.get();
@@ -67,7 +67,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     }
 
     @Test
-     void whenSearchInvalidId_thenUserShouldNotBeFound() {
+    void whenSearchInvalidId_thenUserShouldNotBeFound() {
         Optional<User> found = service.getUserById(-99L);
         User user = null;
         if (found.isPresent()) user = found.get();
@@ -107,7 +107,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     }
 
     @Test
-    public void whenGettingAuthenticatedUser_ThenReturnsValidOptional() {
+    void whenGettingAuthenticatedUser_ThenReturnsValidOptional() {
         assertThat(service.getAuthenticatedUser().getClass()).isEqualTo(Optional.class);
     }
  }
