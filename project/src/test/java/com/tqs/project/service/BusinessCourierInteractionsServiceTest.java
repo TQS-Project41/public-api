@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @ExtendWith(MockitoExtension.class)
- class BusinessCourierInteractionsServiceTest {
+class BusinessCourierInteractionsServiceTest {
 
     @Mock(lenient = true)
     private BusinessCourierInteractionsRepository rep;

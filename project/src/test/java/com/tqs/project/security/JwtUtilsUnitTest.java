@@ -15,7 +15,7 @@ public class JwtUtilsUnitTest {
 
   @Test
   void whenGeneratingToken_thenReturnsString() {
-    assertNotEquals(null, jwtUtils.generateJwtToken(1).getClass());
+    assertNotEquals(null, jwtUtils.generateJwtToken(1));
   }
 
   @Test
