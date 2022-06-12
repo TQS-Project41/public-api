@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @ExtendWith(MockitoExtension.class)
- class BusinessServiceTest {
+class BusinessServiceTest {
 
     @Mock( lenient = true)
     private BusinessRepository rep;

@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @ExtendWith(MockitoExtension.class)
- class CourierServiceTest {
+class CourierServiceTest {
 
     @Mock( lenient = true)
     private CourierRepository rep;

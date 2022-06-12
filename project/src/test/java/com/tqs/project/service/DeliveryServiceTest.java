@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @ExtendWith(MockitoExtension.class)
- class DeliveryServiceTest {
+class DeliveryServiceTest {
 
     @Mock( lenient = true)
     private DeliveryRepository rep;
