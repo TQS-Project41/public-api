@@ -13,15 +13,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.tqs.project.Model.Courier;
-import com.tqs.project.Repository.CourierRepository;
-import com.tqs.project.Service.CourierService;
+import com.tqs.project.model.Courier;
+import com.tqs.project.repository.CourierRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 @ExtendWith(MockitoExtension.class)
- class CourierServiceTest {
+class CourierServiceTest {
 
     @Mock( lenient = true)
     private CourierRepository rep;
@@ -48,6 +47,15 @@ import static org.assertj.core.api.Assertions.assertThat;
         Mockito.when(rep.findById(-99L)).thenReturn(Optional.empty());
     }
 
+    @Test
+    void whenSaveCourier_thenReturnCourier() {
+        Courier courier = new Courier();
+        Mockito.when(rep.save(courier)).thenReturn(courier);
+
+        assertThat(service.save(courier)).isEqualTo(courier);
+
+        Mockito.verify(rep, VerificationModeFactory.times(1)).save(courier);
+    }
 
     @Test
      void whenSearchCourierId_thenCourierShouldBeFound() {

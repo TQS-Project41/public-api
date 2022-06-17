@@ -10,24 +10,20 @@ import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
-import com.tqs.project.Model.Address;
-import com.tqs.project.Model.Business;
-import com.tqs.project.Model.Delivery;
-import com.tqs.project.Model.Shop;
+import com.tqs.project.model.Address;
+import com.tqs.project.model.Business;
+import com.tqs.project.model.Shop;
 
-import com.tqs.project.Repository.ShopRepository;
-
-import com.tqs.project.Service.ShopService;
+import com.tqs.project.repository.ShopRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 @ExtendWith(MockitoExtension.class)
- class ShopServiceTest {
+class ShopServiceTest {
 
     @Mock( lenient = true)
     private ShopRepository rep;
@@ -38,10 +34,10 @@ import static org.assertj.core.api.Assertions.assertThat;
     @BeforeEach
     public void setUp() {
 
-        Shop coviran = new Shop("Coviran", new Address(), new Business(), new HashSet<Delivery>());
+        Shop coviran = new Shop("Coviran", new Address(), new Business());
         coviran.setId(111L);
 
-        Shop pingodoce = new Shop("Pingo Doce", new Address(), new Business(), new HashSet<Delivery>());
+        Shop pingodoce = new Shop("Pingo Doce", new Address(), new Business());
 
         List<Shop> allShops = Arrays.asList(coviran, pingodoce);
 
@@ -50,6 +46,15 @@ import static org.assertj.core.api.Assertions.assertThat;
         Mockito.when(rep.findById(-99L)).thenReturn(Optional.empty());
     }
 
+    @Test
+    void whenSaveCourier_thenReturnCourier() {
+        Shop shop = new Shop();
+        Mockito.when(rep.save(shop)).thenReturn(shop);
+
+        assertThat(service.save(shop)).isEqualTo(shop);
+
+        Mockito.verify(rep, VerificationModeFactory.times(1)).save(shop);
+    }
 
     @Test
      void whenSearchShopId_thenShopShouldBeFound() {
@@ -78,8 +83,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
     @Test
      void whengetAll_thenReturn2Records() {
-        Shop coviran = new Shop("Coviran", new Address(), new Business(), new HashSet<Delivery>());
-        Shop pingodoce = new Shop("Pingo Doce", new Address(), new Business(), new HashSet<Delivery>());
+        Shop coviran = new Shop("Coviran", new Address(), new Business());
+        Shop pingodoce = new Shop("Pingo Doce", new Address(), new Business());
 
         List<Shop> allShops = service.getAllShops();
 

@@ -13,16 +13,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.tqs.project.Model.Courier;
-import com.tqs.project.Model.Delivery;
-import com.tqs.project.Repository.DeliveryRepository;
-import com.tqs.project.Service.DeliveryService;
+import com.tqs.project.model.Courier;
+import com.tqs.project.model.Delivery;
+import com.tqs.project.repository.DeliveryRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 @ExtendWith(MockitoExtension.class)
- class DeliveryServiceTest {
+class DeliveryServiceTest {
 
     @Mock( lenient = true)
     private DeliveryRepository rep;
@@ -51,6 +50,15 @@ import static org.assertj.core.api.Assertions.assertThat;
         Mockito.when(rep.findById(-99L)).thenReturn(Optional.empty());
     }
 
+    @Test
+    void whenSaveCourier_thenReturnCourier() {
+        Delivery delivery = new Delivery();
+        Mockito.when(rep.save(delivery)).thenReturn(delivery);
+
+        assertThat(service.save(delivery)).isEqualTo(delivery);
+
+        Mockito.verify(rep, VerificationModeFactory.times(1)).save(delivery);
+    }
 
     @Test
      void whenSearchDeliveryId_thenDeliveryShouldBeFound() {

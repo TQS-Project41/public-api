@@ -6,18 +6,13 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.PersistenceException;
-import javax.validation.ConstraintViolationException;
 
-import com.tqs.project.Model.Business;
-import com.tqs.project.Model.BusinessCourierInteractionsEventType;
-import com.tqs.project.Model.BusinessCourierInteractionsEventTypeEnum;
-import com.tqs.project.Model.User;
-import com.tqs.project.Repository.BusinessRepository;
-import com.tqs.project.Repository.UserRepository;
+import com.tqs.project.model.Business;
+import com.tqs.project.model.User;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 
-import org.apache.commons.codec.binary.Base16;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -35,10 +30,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class BusinessRepositoryTest {
     
     @Container
-    public static MySQLContainer container = new MySQLContainer()
-        .withUsername("user")
-        .withPassword("user")
-        .withDatabaseName("tqs_41");
+    public static MySQLContainer<?> container = new MySQLContainer<>("mysql");
 
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {
@@ -61,7 +53,7 @@ public class BusinessRepositoryTest {
         Business x = new Business();
         User user = new User();
         user.setPassword("xxxx");
-        user.setUsername("username");
+        user.setEmail("username");
         x.setUser(user);
         repUser.saveAndFlush(user);
         entityManager.persistAndFlush(x);
@@ -86,7 +78,7 @@ public class BusinessRepositoryTest {
         Business b1 = new Business();
         User user = new User();
         user.setPassword("xxxx");
-        user.setUsername("username");
+        user.setEmail("username");
         b1.setUser(user);
         repUser.saveAndFlush(user);
         entityManager.persistAndFlush(b1);
@@ -94,7 +86,7 @@ public class BusinessRepositoryTest {
         Business b2 = new Business();
         User user1 = new User();
         user1.setPassword("xxxx");
-        user1.setUsername("serras");
+        user1.setEmail("serras");
         b2.setUser(user1);
         repUser.saveAndFlush(user1);
         entityManager.persistAndFlush(b2);

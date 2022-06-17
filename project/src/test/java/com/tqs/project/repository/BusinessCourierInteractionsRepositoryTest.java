@@ -3,20 +3,14 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.PersistenceException;
-import javax.validation.ConstraintViolationException;
 
-import com.tqs.project.Exception.UserAlreadyAssignedException;
-import com.tqs.project.Model.Business;
-import com.tqs.project.Model.BusinessCourierInteractions;
-import com.tqs.project.Model.BusinessCourierInteractionsEventType;
-import com.tqs.project.Model.BusinessCourierInteractionsEventTypeEnum;
-import com.tqs.project.Model.Courier;
-import com.tqs.project.Model.User;
-import com.tqs.project.Repository.BusinessCourierInteractionsEventTypeRepository;
-import com.tqs.project.Repository.BusinessCourierInteractionsRepository;
-import com.tqs.project.Repository.BusinessRepository;
-import com.tqs.project.Repository.CourierRepository;
-import com.tqs.project.Repository.UserRepository;
+import com.tqs.project.model.Business;
+import com.tqs.project.model.BusinessCourierInteractions;
+import com.tqs.project.model.BusinessCourierInteractionsEventType;
+import com.tqs.project.model.BusinessCourierInteractionsEventTypeEnum;
+import com.tqs.project.model.Courier;
+import com.tqs.project.model.User;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 
@@ -37,20 +31,13 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class BusinessCourierInteractionsRepositoryTest {
     
     @Container
-    public static MySQLContainer container = new MySQLContainer()
-        .withUsername("user")
-        .withPassword("user")
-        .withDatabaseName("tqs_41");
+    public static MySQLContainer<?> container = new MySQLContainer<>("mysql");
 
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", container::getJdbcUrl);
         registry.add("spring.datasource.password", container::getPassword);
         registry.add("spring.datasource.username", container::getUsername);
-    }
-    @Test
-    void contextLoads(){
-        System.out.println("Context Loads!");
     }
 
     @Autowired
@@ -70,15 +57,14 @@ public class BusinessCourierInteractionsRepositoryTest {
     private TestEntityManager entityManager;
     
     @Test
-    void testWhenCreateBusinessCourierInteractionsAndFindById_thenReturnSameBusinessCourierInteractions() throws UserAlreadyAssignedException {
+    void testWhenCreateBusinessCourierInteractionsAndFindById_thenReturnSameBusinessCourierInteractions() {
         BusinessCourierInteractions x = new BusinessCourierInteractions();
         Courier c = new Courier();
         c.setName("alex");
         x.setCourier(c);
         User user = new User();
         user.setPassword("xxxx");
-        user.setUsername("username");
-        user.setCourier(null);
+        user.setEmail("username");
         Business b = new Business();
         BusinessCourierInteractionsEventType bus= new BusinessCourierInteractionsEventType(BusinessCourierInteractionsEventTypeEnum.ACCEPT);
         x.setEvent(bus);
@@ -106,7 +92,7 @@ public class BusinessCourierInteractionsRepositoryTest {
      */
     
     @Test
-    void testGivenBusinessCourierInteractionsAndFindByAll_thenReturnSameBusinessCourierInteractions() throws UserAlreadyAssignedException {
+    void testGivenBusinessCourierInteractionsAndFindByAll_thenReturnSameBusinessCourierInteractions() {
       
 
         BusinessCourierInteractions x = new BusinessCourierInteractions();
@@ -120,11 +106,10 @@ public class BusinessCourierInteractionsRepositoryTest {
         c1.setName("serras");
         User user1 = new User();
         user1.setPassword("xxxx");
-        user1.setUsername("aaaaa");
+        user1.setEmail("aaaaa");
         User user = new User();
         user.setPassword("xxxx");
-        user.setUsername("username");
-        user.setCourier(null);
+        user.setEmail("username");
         Business b = new Business();
         Business b1 = new Business();
 
