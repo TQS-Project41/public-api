@@ -23,8 +23,9 @@ import com.tqs.project.service.NominatimService;
 import com.tqs.project.service.ShopService;
 import com.tqs.project.service.UserService;
 
-@CrossOrigin
 @RestController
+@RequestMapping("/shop")
+
 public class ShopController {
 
     @Autowired
@@ -38,12 +39,11 @@ public class ShopController {
     @Autowired
     private NominatimService nominatimService;
 
-    @PostMapping("/shop")
+    @PostMapping("")
     public ResponseEntity<Shop> createShop(@Valid @RequestBody ShopDto shop) throws BadLocationException, IOException, InterruptedException, ParseException {
         Optional<User> user = userService.getAuthenticatedUser();
         if (user.isEmpty()) return  ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 
-        System.out.println("aaaaaaaaa");
         Optional<Business> business = businessService.getBusinessById(user.get().getId());
         if (business.isEmpty()) return  ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         Map<String, Double> map = nominatimService.getAddress(shop.getAddress().getAddress(), shop.getAddress().getCity(), shop.getAddress().getZipcode(), shop.getAddress().getCountry());
