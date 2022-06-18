@@ -45,10 +45,9 @@ public class ShopController {
 
         Optional<User> user_opt = userService.getAuthenticatedUser();
         if (!user_opt.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        User user = user_opt.get();
 
-        List<Shop> a =service.getAllShops();
-        return new ResponseEntity(a,HttpStatus.OK);        
+        List<Shop> shop =service.getAllShops();
+        return  ResponseEntity.status(HttpStatus.OK).body(shop);
       }
 
     @GetMapping("{id}")
@@ -56,27 +55,26 @@ public class ShopController {
 
         Optional<User> user_opt = userService.getAuthenticatedUser();
         if (!user_opt.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        User user = user_opt.get();
 
         Optional<Shop> a =service.getShopById(id);
         if (!a.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         Shop ret = a.get();
 
-        return new ResponseEntity(ret,HttpStatus.OK);        
+        return  ResponseEntity.status(HttpStatus.OK).body(ret);     
       }
     @PutMapping("{id}")
     public ResponseEntity<Shop> UpdateShopById(@PathVariable int id,@RequestParam String name) {
 
         Optional<User> user_opt = userService.getAuthenticatedUser();
         if (!user_opt.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        User user = user_opt.get();
 
         Optional<Shop> a =service.getShopById(id);
         if (!a.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         Shop ret = a.get();
         ret.setName(name);
         service.save(ret);
-        return new ResponseEntity(ret,HttpStatus.OK);        
+        return  ResponseEntity.status(HttpStatus.OK).body(ret);     
+        
     }
   
       
