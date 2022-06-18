@@ -1,13 +1,16 @@
 package com.tqs.project.dto;
 
+import javax.validation.constraints.NotEmpty;
+
 public class AddressDto {
   
+  @NotEmpty
   private String country;
-
+  @NotEmpty
   private String zipcode;
-
+  @NotEmpty
   private String city;
-
+  @NotEmpty
   private String address;
 
   public String getCountry() {

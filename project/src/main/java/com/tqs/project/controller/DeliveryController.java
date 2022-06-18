@@ -23,31 +23,31 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("delivery")
 public class DeliveryController {
 
-    @Autowired
-    private DeliveryService service;
+    // @Autowired
+    // private DeliveryService service;
 
-    @Autowired
-    private ShopService shopService;
+    // @Autowired
+    // private ShopService shopService;
 
-    @Autowired
-    private CourierService courierService;
+    // @Autowired
+    // private CourierService courierService;
 
-    // TODO This endpoint should allow filtering
-    @GetMapping("")
-    public List<Delivery> getDelivery() {
-        return service.getAllDeliveries();
-    }
+    // // TODO This endpoint should allow filtering
+    // @GetMapping("")
+    // public List<Delivery> getDelivery() {
+    //     return service.getAllDeliveries();
+    // }
 
-    @PostMapping("")
-    public ResponseEntity<String> createDelivery(@RequestBody DeliveryDto delivery) throws BadPhoneNumberException {
-        Optional<Shop> shop = shopService.getShopById(delivery.getShopId());
-        if (shop.isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    // @PostMapping("")
+    // public ResponseEntity<String> createDelivery(@RequestBody DeliveryDto delivery) throws BadPhoneNumberException {
+    //     Optional<Shop> shop = shopService.getShopById(delivery.getShopId());
+    //     if (shop.isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-        DeliveryContact client = new DeliveryContact(delivery.getClientName(), delivery.getClientPhoneNumber());
+    //     DeliveryContact client = new DeliveryContact(delivery.getClientName(), delivery.getClientPhoneNumber());
 
-        courierService.getCourierById(1);
+    //     courierService.getCourierById(1);
 
-        service.save(new Delivery(delivery.getDeliveryTimestamp(), null, client, shop.get(), new Courier()));
-        return ResponseEntity.status(HttpStatus.CREATED).body("Delivery was created with success (CODE 201)\n");
-    }
+    //     service.save(new Delivery(delivery.getDeliveryTimestamp(), null, client, shop.get(), new Courier()));
+    //     return ResponseEntity.status(HttpStatus.CREATED).body("Delivery was created with success (CODE 201)\n");
+    // }
 }

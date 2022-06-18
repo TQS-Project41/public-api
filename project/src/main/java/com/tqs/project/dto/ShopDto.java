@@ -1,7 +1,10 @@
 package com.tqs.project.dto;
 
+import javax.validation.constraints.NotEmpty;
+
 public class ShopDto {
 
+  @NotEmpty
   private String name;
 
   private AddressDto address;

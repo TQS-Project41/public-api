@@ -51,7 +51,7 @@ class AuthControllerMockMvcTest {
     body.put("email", "pedro.dld@ua.pt");
     body.put("password", "password");
 
-    RestAssuredMockMvc.given().params(body)
+    RestAssuredMockMvc.given().body(body)
         .contentType("application/json")
         .when()
         .post("/login")
@@ -71,7 +71,7 @@ class AuthControllerMockMvcTest {
     body.put("email", "pedro.dld@ua.pt");
     body.put("password", "password");
 
-    RestAssuredMockMvc.given().params(body)
+    RestAssuredMockMvc.given().body(body)
         .contentType("application/json")
         .when()
         .post("/login")
