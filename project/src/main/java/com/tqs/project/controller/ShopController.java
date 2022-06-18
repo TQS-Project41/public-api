@@ -1,6 +1,7 @@
 package com.tqs.project.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -39,6 +40,47 @@ public class ShopController {
     @Autowired
     private NominatimService nominatimService;
 
+    @GetMapping("")
+    public ResponseEntity<List<Shop>> allShop() {
+
+        Optional<User> user_opt = userService.getAuthenticatedUser();
+        if (!user_opt.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        User user = user_opt.get();
+
+        List<Shop> a =service.getAllShops();
+        return new ResponseEntity(a,HttpStatus.OK);        
+      }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Shop> getShopById(@PathVariable int id) {
+
+        Optional<User> user_opt = userService.getAuthenticatedUser();
+        if (!user_opt.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        User user = user_opt.get();
+
+        Optional<Shop> a =service.getShopById(id);
+        if (!a.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Shop ret = a.get();
+
+        return new ResponseEntity(ret,HttpStatus.OK);        
+      }
+    @PutMapping("{id}")
+    public ResponseEntity<Shop> UpdateShopById(@PathVariable int id,@RequestParam String name) {
+
+        Optional<User> user_opt = userService.getAuthenticatedUser();
+        if (!user_opt.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        User user = user_opt.get();
+
+        Optional<Shop> a =service.getShopById(id);
+        if (!a.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Shop ret = a.get();
+        ret.setName(name);
+        service.save(ret);
+        return new ResponseEntity(ret,HttpStatus.OK);        
+    }
+  
+      
+      
     @PostMapping("")
     public ResponseEntity<Shop> createShop(@Valid @RequestBody ShopDto shop) throws BadLocationException, IOException, InterruptedException, ParseException {
         Optional<User> user = userService.getAuthenticatedUser();
@@ -57,4 +99,8 @@ public class ShopController {
         Shop shopCreated = service.save(new Shop(shop.getName(), address, business.get()));
         return ResponseEntity.status(HttpStatus.CREATED).body(shopCreated);
     }
+
+
+
+
 }

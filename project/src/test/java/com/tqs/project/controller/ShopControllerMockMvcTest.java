@@ -2,7 +2,9 @@ package com.tqs.project.controller;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -61,6 +63,195 @@ public class ShopControllerMockMvcTest {
   @BeforeEach
   void setUp() {
     RestAssuredMockMvc.mockMvc(mvc);
+  }
+  @Test
+  void GetAllStores_ByInvalidUser() throws IOException, InterruptedException, ParseException {
+
+    when(userService.getAuthenticatedUser()).thenReturn(Optional.empty());
+    List<Shop> lst= new ArrayList<>();
+    Shop a = new Shop("aaa", null, null);
+    Shop b = new Shop("ccc", null, null);
+    Shop c = new Shop("bbb", null, null);
+    lst.add(a);
+    lst.add(b);
+    lst.add(c);
+
+    when(service.getAllShops()).thenReturn(lst);
+    RestAssuredMockMvc.given()
+        .contentType("application/json")
+        .when()
+        .get("/shop")
+        .then()
+        .statusCode(404);
+
+    
+    verify(service, VerificationModeFactory.times(0)).getAllShops();
+  }
+  @Test
+  void getByIdWithInvalidUser_ThenReturnShop() throws IOException, InterruptedException, ParseException {
+
+    when(userService.getAuthenticatedUser()).thenReturn(Optional.empty());
+    when(service.getShopById(1L)).thenReturn(Optional.empty());
+
+    List<Shop> lst= new ArrayList<>();
+    Shop a = new Shop("aaa", null, null);
+    Shop b = new Shop("ccc", null, null);
+    Shop c = new Shop("bbb", null, null);
+    lst.add(a);
+    lst.add(b);
+    lst.add(c);
+
+    when(service.getAllShops()).thenReturn(lst);
+    RestAssuredMockMvc.given()
+        .contentType("application/json")
+        .when()
+        .get("/shop/{id}",1)
+        .then()
+        .statusCode(404);
+
+    
+    verify(service, VerificationModeFactory.times(0)).getShopById(1l);
+  }
+  @Test
+  void putWithInvidArgs_ThenReturnBadArgs() throws IOException, InterruptedException, ParseException {
+
+    when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
+    when(service.getShopById(1L)).thenReturn(Optional.of(new Shop()));
+    when(service.save(any())).thenReturn(new Shop());
+
+
+
+    RestAssuredMockMvc.given()
+        .contentType("application/json")
+        .when()
+        .put("/shop/{id}",1)
+        .then()
+        .statusCode(400);
+
+    
+    verify(service, VerificationModeFactory.times(0)).getShopById(1l);
+  }
+  @Test
+  void putByInvalidShop_ThenReturnShop() throws IOException, InterruptedException, ParseException {
+
+    when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
+    when(service.getShopById(1L)).thenReturn(Optional.empty());
+    when(service.save(any())).thenReturn(new Shop());
+    RestAssuredMockMvc.given()
+        .contentType("application/json")
+        .when()
+        .put("/shop/{id}?name=aaaa",1)
+        .then()
+        .statusCode(404);
+
+    
+    verify(service, VerificationModeFactory.times(1)).getShopById(1l);
+  }
+  @Test
+  void putByInvalidUser_ThenReturnShop() throws IOException, InterruptedException, ParseException {
+
+    when(userService.getAuthenticatedUser()).thenReturn(Optional.empty());
+    when(service.getShopById(1L)).thenReturn(Optional.of(new Shop()));
+    when(service.save(any())).thenReturn(new Shop());
+
+
+
+    RestAssuredMockMvc.given()
+        .contentType("application/json")
+        .when()
+        .put("/shop/{id}?name=aaaa",1)
+        .then()
+        .statusCode(404);
+
+    
+    verify(service, VerificationModeFactory.times(0)).getShopById(1l);
+  }
+
+  @Test
+  void putByIdSucessCase_ThenReturnShop() throws IOException, InterruptedException, ParseException {
+
+    when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
+    when(service.getShopById(1L)).thenReturn(Optional.of(new Shop()));
+    when(service.save(any())).thenReturn(new Shop());
+
+
+
+    RestAssuredMockMvc.given()
+        .contentType("application/json")
+        .when()
+        .put("/shop/{id}?name=aaaa",1)
+        .then()
+        .statusCode(200);
+
+    
+    verify(service, VerificationModeFactory.times(1)).getShopById(1l);
+  }
+
+  @Test
+  void getByIdSucessCase_ThenReturnShop() throws IOException, InterruptedException, ParseException {
+
+    when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
+    when(service.getShopById(1L)).thenReturn(Optional.of(new Shop()));
+
+
+    RestAssuredMockMvc.given()
+        .contentType("application/json")
+        .when()
+        .get("/shop/{id}",1)
+        .then()
+        .statusCode(200);
+
+    
+    verify(service, VerificationModeFactory.times(1)).getShopById(1l);
+  }
+  @Test
+  void getById_ThenReturnShop() throws IOException, InterruptedException, ParseException {
+
+    when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
+    when(service.getShopById(1L)).thenReturn(Optional.empty());
+
+    List<Shop> lst= new ArrayList<>();
+    Shop a = new Shop("aaa", null, null);
+    Shop b = new Shop("ccc", null, null);
+    Shop c = new Shop("bbb", null, null);
+    lst.add(a);
+    lst.add(b);
+    lst.add(c);
+
+    when(service.getAllShops()).thenReturn(lst);
+    RestAssuredMockMvc.given()
+        .contentType("application/json")
+        .when()
+        .get("/shop/{id}",1)
+        .then()
+        .statusCode(404);
+
+    
+    verify(service, VerificationModeFactory.times(1)).getShopById(1l);
+  }
+
+  @Test
+  void GetAllStores_ByUser() throws IOException, InterruptedException, ParseException {
+
+    when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
+    List<Shop> lst= new ArrayList<>();
+    Shop a = new Shop("aaa", null, null);
+    Shop b = new Shop("ccc", null, null);
+    Shop c = new Shop("bbb", null, null);
+    lst.add(a);
+    lst.add(b);
+    lst.add(c);
+
+    when(service.getAllShops()).thenReturn(lst);
+    RestAssuredMockMvc.given()
+        .contentType("application/json")
+        .when()
+        .get("/shop")
+        .then()
+        .statusCode(200);
+
+    
+    verify(service, VerificationModeFactory.times(1)).getAllShops();
   }
 
   @Test
@@ -216,8 +407,6 @@ public class ShopControllerMockMvcTest {
         .post("/shop")
         .then()
         .statusCode(400);
-
-
     verify(service, VerificationModeFactory.times(0)).save(any(Shop.class));
 
   }
