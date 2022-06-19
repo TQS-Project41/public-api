@@ -18,6 +18,8 @@ import com.tqs.project.model.Delivery;
 import com.tqs.project.repository.DeliveryRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyDouble;
+import static org.mockito.ArgumentMatchers.anyFloat;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -82,6 +84,11 @@ class DeliveryServiceTest {
         Mockito.verify(rep, VerificationModeFactory.times(1)).findById(Mockito.anyLong());
 
         assertThat(delivery).isNull();
+    }
+
+    @Test
+     void test_fee_Function() {
+        assertThat(service.getFee()).isEqualTo(5.0);
     }
 
 
