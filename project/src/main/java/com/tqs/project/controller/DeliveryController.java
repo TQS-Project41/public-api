@@ -1,9 +1,12 @@
 package com.tqs.project.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 import com.tqs.project.service.UserService;
 import com.tqs.project.model.Address;
@@ -70,27 +73,33 @@ public class DeliveryController {
     }
 
     @GetMapping("/fee")
-    public ResponseEntity<Double> deliveryFee() {
-        return ResponseEntity.status(HttpStatus.OK).body(service.getFee());
+    public ResponseEntity<Map<String, Double>> deliveryFee() {
+        Map<String,Double> ret = new HashMap<>();
+        ret.put("fee",service.getFee());
+        return ResponseEntity.status(HttpStatus.OK).body(ret);
  
     }
 
     @PostMapping("")
-    public ResponseEntity<Delivery> createDelivery(@RequestBody DeliveryDto delivery) throws BadPhoneNumberException, IOException, InterruptedException, ParseException, BadLocationException {
+    public ResponseEntity<Delivery> createDelivery(@Valid @RequestBody DeliveryDto delivery) throws BadPhoneNumberException, IOException, InterruptedException, ParseException, BadLocationException {
         Optional<Shop> shop = shopService.getShopById(delivery.getShopId());
-        if (shop.isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        if (shop.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         DeliveryContact client = new DeliveryContact(delivery.getClientName(), delivery.getClientPhoneNumber());
         
         Map<String, Double> coordenadas = nominatimService.getAddress(delivery.getAddress().getAddress(),delivery.getAddress().getCity() , delivery.getAddress().getZipcode(), delivery.getAddress().getCountry());
-        Address address = new Address(coordenadas.get("lat"), coordenadas.get("lon"));
-        Delivery del = new Delivery(delivery.getDeliveryTimestamp(), address, client, shop.get(), null);
-        del=service.save(del);
-        return ResponseEntity.status(HttpStatus.CREATED).body(del);
+        if (coordenadas.containsKey("lat")){
+            Address address = new Address(coordenadas.get("lat"), coordenadas.get("lon"));
+            Delivery del = new Delivery(delivery.getDeliveryTimestamp(), address, client, shop.get(), null);
+            del=service.save(del);
+            return ResponseEntity.status(HttpStatus.CREATED).body(del); 
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); 
+       
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Delivery> createDelivery(@PathVariable int id) throws BadPhoneNumberException {
+    public ResponseEntity<Delivery> getDelivery(@PathVariable int id) throws BadPhoneNumberException {
         Optional<User> user_opt = userService.getAuthenticatedUser();
         if (!user_opt.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
@@ -112,7 +121,6 @@ public class DeliveryController {
         if (del.getStatus() == DeliveryStatusEnum.QUEUED ){
 
             del.setStatus(DeliveryStatusEnum.CANCELLED);
-            service.save(del);
 
             service.save(del);
             return ResponseEntity.status(HttpStatus.OK).body(del);
@@ -122,14 +130,14 @@ public class DeliveryController {
     }
 
     @PutMapping("{id}/accept")
-    public ResponseEntity<Delivery> acceptDelivery(@PathVariable int id,@RequestParam int courier) throws BadPhoneNumberException {
+    public ResponseEntity<Delivery> acceptDelivery(@PathVariable int id) throws BadPhoneNumberException {
         Optional<User> user_opt = userService.getAuthenticatedUser();
         if (!user_opt.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         Optional<Delivery> delivery_opt =  service.getDeliveryById(id);
         if (!delivery_opt.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        Optional<Courier> courier_opt =  courierService.getCourierById(courier);
+        Optional<Courier> courier_opt =  courierService.getCourierById(user_opt.get().getId());
         if (!courier_opt.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         Courier courier_choosen = courier_opt.get();
