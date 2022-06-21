@@ -60,21 +60,12 @@ public class DeliveryController {
         if (!user_opt.isPresent())  return Page.empty();
         User user = user_opt.get();
 
-        List<Courier> couriers = courierService.getAllCouriers();
+        Optional<Courier> couriers = courierService.getCourierById(user.getId());
+        if (couriers.isPresent())  return service.getAll(user.getId(), null, pageable);
+        
+        Optional<Business> bus = shopService.getShopByBusinessId(user.getId());
+        if (bus.isPresent())  return service.getAll(null, user.getId(), pageable);
 
-        for(Courier c : couriers){
-            if (c.getUser().getId() == user.getId()){
-                return service.getAll(c.getId(), null, pageable);
-            }
-        }
-        List<Shop> shops = shopService.getAllShops();
-
-        for(Shop shop : shops){
-            if (shop.getBusiness().getUser().getId() == user.getId()){
-                
-                return service.getAll(null, shop.getId(), pageable);
-            }
-        }
         return Page.empty();
     }
 

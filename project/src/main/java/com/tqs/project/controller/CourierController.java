@@ -54,7 +54,7 @@ public class CourierController {
     Optional<User> user_opt = userService.getAuthenticatedUser();
     if (!user_opt.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     List<Courier> ret = service.getAllCouriers();
-    return new ResponseEntity<>(ret, HttpStatus.CREATED);
+    return new ResponseEntity<>(ret, HttpStatus.OK);
   }
   
   @GetMapping("/{id}")
@@ -65,7 +65,7 @@ public class CourierController {
     Optional<Courier> courier_opt =  service.getCourierById(id);
     if (!courier_opt.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-    return new ResponseEntity<>(courier_opt.get(), HttpStatus.CREATED);
+    return new ResponseEntity<>(courier_opt.get(), HttpStatus.OK);
   }
 
   @PutMapping("/{id}")
@@ -84,13 +84,13 @@ public class CourierController {
       courier.setName(name);
     }
     if (!password.equals("")){  
-      courier.setName(password);
+      courier.getUser().setPassword(password);
     }
     if (!photo.equals("")){  
-      courier.setName(photo);
+      courier.setPhoto(photo);
     }
     service.save(courier);
-    return new ResponseEntity<>(courier, HttpStatus.CREATED);
+    return new ResponseEntity<>(courier, HttpStatus.OK);
   }
 
   
