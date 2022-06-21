@@ -16,6 +16,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.tqs.project.service.UserService;
+import com.tqs.project.service.DeliveryService;
 import com.tqs.project.model.Courier;
 import com.tqs.project.security.AuthTokenFilter;
 import com.tqs.project.security.JwtUtils;
@@ -32,6 +34,12 @@ class CourierControllerMockMvcTest {
 
   @MockBean
   private CourierService courierService;
+
+  @MockBean
+  private UserService userService;
+
+  @MockBean
+  private DeliveryService deliveryService;
 
   @MockBean
   private JwtUtils jwtUtils;
