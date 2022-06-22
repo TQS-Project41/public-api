@@ -6,7 +6,7 @@ on:
       - main
 jobs:
   deploy:
-    runs-on: [self-hosted, linux, dev]
+    runs-on: [self-hosted, linux]
     steps:
       - uses: actions/checkout@v1
       - run: sh deploy_public.sh
