@@ -82,15 +82,28 @@ public class DeliveryController {
 
     @PostMapping("")
     public ResponseEntity<Delivery> createDelivery(@Valid @RequestBody DeliveryDto delivery) throws BadPhoneNumberException, IOException, InterruptedException, ParseException, BadLocationException {
-        Optional<Shop> shop = shopService.getShopById(delivery.getShopId());
-        if (shop.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        Optional<User> user_opt = userService.getAuthenticatedUser();
+        if (!user_opt.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        User user = user_opt.get();
+        Optional<Business> bus_opt = busService.getBusinessById(user.getId());
+        if (!bus_opt.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        Map<String, Double> coordenadas_store = nominatimService.getAddress(delivery.getShopAddress().getAddress(),delivery.getShopAddress().getCity() , delivery.getShopAddress().getZipcode(), delivery.getShopAddress().getCountry());
+        if (!coordenadas_store.containsKey("lat")){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+
+        Shop shop = new Shop(delivery.getShopAddress().getAddress(), new Address(coordenadas_store.get("lat"),coordenadas_store.get("lon")), bus_opt.get());
+        shop=shopService.save(shop);
 
         DeliveryContact client = new DeliveryContact(delivery.getClientName(), delivery.getClientPhoneNumber());
         
         Map<String, Double> coordenadas = nominatimService.getAddress(delivery.getAddress().getAddress(),delivery.getAddress().getCity() , delivery.getAddress().getZipcode(), delivery.getAddress().getCountry());
         if (coordenadas.containsKey("lat")){
             Address address = new Address(coordenadas.get("lat"), coordenadas.get("lon"));
-            Delivery del = new Delivery(delivery.getDeliveryTimestamp(), address, client, shop.get(), null);
+            Delivery del = new Delivery(delivery.getDeliveryTimestamp(), address, client, shop, null);
             del=service.save(del);
             return ResponseEntity.status(HttpStatus.CREATED).body(del); 
         }

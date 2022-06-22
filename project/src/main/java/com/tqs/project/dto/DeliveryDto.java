@@ -7,7 +7,7 @@ public class DeliveryDto {
 
   private String deliveryTimestamp;
 
-  private Long shopId;
+  private AddressDto shopAddress;
 
   private AddressDto address;
 
@@ -20,8 +20,8 @@ public class DeliveryDto {
     return LocalDateTime.parse(this.deliveryTimestamp, formatter);
   }
 
-  public Long getShopId() {
-    return this.shopId;
+  public AddressDto getShopAddress() {
+    return this.shopAddress;
   }
 
   public AddressDto getAddress() {
