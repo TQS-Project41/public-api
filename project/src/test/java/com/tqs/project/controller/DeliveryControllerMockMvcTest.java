@@ -289,26 +289,10 @@ public class DeliveryControllerMockMvcTest {
   }
 
 
-  @Test
-    void whenGetInvalidDeliveryByIdDelivery_ThenReturnNotFoundDelivery() throws IOException, InterruptedException, ParseException {
-    
-        when(userService.getAuthenticatedUser()).thenReturn(Optional.empty());
-
-
-
-        RestAssuredMockMvc.given()
-            .contentType("application/json")
-            .when()
-            .get("/delivery/{id}",1)
-            .then()
-            .statusCode(404);
-  }
-
 
   @Test
     void whenGetDeliveryByInvalidIdDelivery_ThenReturnNotFoundDelivery() throws IOException, InterruptedException, ParseException {
     
-        when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
         when(deliveryService.getDeliveryById(anyLong())).thenReturn(Optional.empty());
         RestAssuredMockMvc.given()
             .contentType("application/json")
@@ -321,7 +305,6 @@ public class DeliveryControllerMockMvcTest {
   
   @Test
   void whenGetDeliveryByIdDelivery_ThenReturnDelivery() throws IOException, InterruptedException, ParseException {
-      when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
       when(deliveryService.getDeliveryById(anyLong())).thenReturn(Optional.of(new Delivery()));
       RestAssuredMockMvc.given()
           .contentType("application/json")
@@ -330,24 +313,11 @@ public class DeliveryControllerMockMvcTest {
           .then()
           .statusCode(200);
     }
-    @Test
-    void whenDeleteInvalidDeliveryByIdDelivery_ThenReturnNotFoundDelivery() throws IOException, InterruptedException, ParseException {
-    
-        when(userService.getAuthenticatedUser()).thenReturn(Optional.empty());
-
-        RestAssuredMockMvc.given()
-            .contentType("application/json")
-            .when()
-            .delete("/delivery/{id}",1)
-            .then()
-            .statusCode(404);
-  }
-
+   
 
   @Test
     void whenDeleteDeliveryByInvalidIdDelivery_ThenReturnNotFoundDelivery() throws IOException, InterruptedException, ParseException {
     
-        when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
         when(deliveryService.getDeliveryById(anyLong())).thenReturn(Optional.empty());
         RestAssuredMockMvc.given()
             .contentType("application/json")
@@ -359,7 +329,6 @@ public class DeliveryControllerMockMvcTest {
 
   @Test
   void whenDeleteDeliveryByIdDelivery_ThenReturnDelivery() throws IOException, InterruptedException, ParseException {
-      when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
       when(deliveryService.getDeliveryById(anyLong())).thenReturn(Optional.of(new Delivery()));
       RestAssuredMockMvc.given()
           .contentType("application/json")
@@ -372,7 +341,6 @@ public class DeliveryControllerMockMvcTest {
     void whenDeleteDeliveryByIdDeliveryWithInvalidState_ThenReturnForbidden() throws IOException, InterruptedException, ParseException {
         Delivery d = new Delivery();
         d.setStatus(DeliveryStatusEnum.COLLECTING);
-        when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
         when(deliveryService.getDeliveryById(anyLong())).thenReturn(Optional.of(d));
         RestAssuredMockMvc.given()
             .contentType("application/json")
