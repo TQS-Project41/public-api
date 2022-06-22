@@ -20,7 +20,10 @@ import com.tqs.project.model.Business;
 import com.tqs.project.security.AuthTokenFilter;
 import com.tqs.project.security.JwtUtils;
 import com.tqs.project.security.WebSecurityConfig;
+import com.tqs.project.service.BusinessCourierInteractionsService;
 import com.tqs.project.service.BusinessService;
+import com.tqs.project.service.CourierService;
+import com.tqs.project.service.UserService;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 
@@ -32,6 +35,15 @@ class BusinessControllerMockMvcTest {
 
   @MockBean
   private BusinessService businessService;
+
+  @MockBean
+  private UserService userService;
+
+  @MockBean
+  private CourierService courierService;
+
+  @MockBean
+  private BusinessCourierInteractionsService businessCourierInteractionsService;
 
   @MockBean
   private JwtUtils jwtUtils;
