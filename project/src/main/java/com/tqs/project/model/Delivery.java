@@ -6,6 +6,8 @@ import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -48,10 +50,20 @@ public class Delivery {
     private Shop shop;
 
     @ManyToOne
-    @JoinColumn(name="courier_id", nullable=false)
+    @JoinColumn(name="courier_id",nullable = true)
     private Courier courier;
 
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column
+    @NotNull
+    private DeliveryStatusEnum status;
+
+
+
     public Delivery() {
+        this.status= DeliveryStatusEnum.QUEUED;
+
     }
     
 
@@ -61,7 +73,20 @@ public class Delivery {
         this.client = client;
         this.shop = shop;
         this.courier = courier;
+        this.status= DeliveryStatusEnum.QUEUED;
+        
     }
+
+
+    public DeliveryStatusEnum getStatus() {
+        return status;
+    }
+
+
+    public void setStatus(DeliveryStatusEnum status) {
+        this.status = status;
+    }
+
 
     public long getId() {
         return this.id;

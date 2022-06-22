@@ -48,7 +48,7 @@ public class ShopController {
 
         List<Shop> shop =service.getAllShops();
         return  ResponseEntity.status(HttpStatus.OK).body(shop);
-      }
+    }
 
     @GetMapping("{id}")
     public ResponseEntity<Shop> getShopById(@PathVariable int id) {
@@ -61,7 +61,7 @@ public class ShopController {
         Shop ret = a.get();
 
         return  ResponseEntity.status(HttpStatus.OK).body(ret);     
-      }
+    }
     @PutMapping("{id}")
     public ResponseEntity<Shop> UpdateShopById(@PathVariable int id,@RequestParam String name) {
 

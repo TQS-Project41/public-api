@@ -16,7 +16,7 @@ import java.util.Optional;
 import com.tqs.project.model.Address;
 import com.tqs.project.model.Business;
 import com.tqs.project.model.Shop;
-
+import com.tqs.project.repository.BusinessRepository;
 import com.tqs.project.repository.ShopRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,12 +28,16 @@ class ShopServiceTest {
     @Mock( lenient = true)
     private ShopRepository rep;
 
+    @Mock( lenient = true)
+    private BusinessRepository busRep;
+
     @InjectMocks
     private ShopService service;
 
     @BeforeEach
     public void setUp() {
-
+        Business bus = new Business();
+        bus.setId(1l);
         Shop coviran = new Shop("Coviran", new Address(), new Business());
         coviran.setId(111L);
 
@@ -44,6 +48,7 @@ class ShopServiceTest {
         Mockito.when(rep.findById(coviran.getId())).thenReturn(Optional.of(coviran));
         Mockito.when(rep.findAll()).thenReturn(allShops);
         Mockito.when(rep.findById(-99L)).thenReturn(Optional.empty());
+        Mockito.when(busRep.findById(1L)).thenReturn(Optional.of(bus));
     }
 
     @Test
@@ -92,5 +97,17 @@ class ShopServiceTest {
         Mockito.verify(rep, VerificationModeFactory.times(1)).findAll();
 
         assertThat(allShops).hasSize(2).extracting(Shop::getName).contains(coviran.getName(), pingodoce.getName());
+    }
+
+    @Test
+     void getShopByBusinessId_thenReturnBusiness() {
+        Business bus = new Business();
+        bus.setId(1l);
+        Optional<Business> allShops = service.getShopByBusinessId(1L);
+    
+        Mockito.verify(busRep, VerificationModeFactory.times(1)).findById(1L);
+        assertThat(allShops.get().getId()).isEqualTo(1);
+
+
     }
  }
