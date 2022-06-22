@@ -10,7 +10,7 @@ public class BusinessCourierInteractionsTest {
     void whenCreateValidBusinessCourierInteractionsWithSetters_thenReturnBusinessCourierInteractions() {
         Business bus = new Business();
         Courier c = new Courier();
-        BusinessCourierInteractionsEventType event = new BusinessCourierInteractionsEventType();
+        BusinessCourierInteractionsEventTypeEnum event = BusinessCourierInteractionsEventTypeEnum.ACCEPT;
 
         BusinessCourierInteractions b = new BusinessCourierInteractions();
 
@@ -29,7 +29,7 @@ public class BusinessCourierInteractionsTest {
     void whenCreateValidBusinessCourierInteractionsWithConstructor_thenReturnBusinessCourierInteractions() {
         Business business = new Business();
         Courier courier = new Courier();
-        BusinessCourierInteractionsEventType event = new BusinessCourierInteractionsEventType();
+        BusinessCourierInteractionsEventTypeEnum event = BusinessCourierInteractionsEventTypeEnum.ACCEPT;
 
         BusinessCourierInteractions b = new BusinessCourierInteractions(business, courier, event);
 

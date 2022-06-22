@@ -4,12 +4,15 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -36,14 +39,15 @@ public class BusinessCourierInteractions {
     @JoinColumn(name="courier_id", nullable=false)
     private Courier courier;
     
-    @ManyToOne
-    @JoinColumn(name="event_id", nullable=false)
-    private BusinessCourierInteractionsEventType event;
+    @Enumerated(EnumType.ORDINAL)
+    @Column
+    @NotNull
+    private BusinessCourierInteractionsEventTypeEnum event;
     
     public BusinessCourierInteractions() {
     }
     
-    public BusinessCourierInteractions(Business business, Courier courier, BusinessCourierInteractionsEventType event) {
+    public BusinessCourierInteractions(Business business, Courier courier, BusinessCourierInteractionsEventTypeEnum event) {
         this.business = business;
         this.courier = courier;
         this.event = event;
@@ -77,11 +81,11 @@ public class BusinessCourierInteractions {
         this.courier = courier;
     }
 
-    public BusinessCourierInteractionsEventType getEvent() {
+    public BusinessCourierInteractionsEventTypeEnum getEvent() {
         return event;
     }
 
-    public void setEvent(BusinessCourierInteractionsEventType event) {
+    public void setEvent(BusinessCourierInteractionsEventTypeEnum event) {
         this.event = event;
     }
   
