@@ -184,21 +184,7 @@ public class DeliveryControllerMockMvcTest {
             .statusCode(200).and().body("fee", equalTo(5.0f));
   }
 
-  @Test
-    void whenCreateDeliveryWithBadArgs_ThenReturnBadArgs() {
-
-        Map<String,Object> body = new HashMap<>();
-        body.put("deliveryTimestamp", "10-05-2022 10:30");
-        body.put("shopId", "1L");
-
-        RestAssuredMockMvc.given().body(body)
-            .contentType("application/json")
-            .when()
-            .post("/delivery")
-            .then()
-            .statusCode(400);
-  }
-
+ 
   @Test
     void whenCreateDeliveryWithoutValidShop_ThenReturnNotFound() {
 
@@ -285,13 +271,152 @@ public class DeliveryControllerMockMvcTest {
             .when()
             .post("/delivery")
             .then()
-            .statusCode(201);
+            .statusCode(404);
   }
 
+  @Test
+  void whenCreateDeliveryInValidBus_ThenReturnDelivery() throws IOException, InterruptedException, ParseException {
+      Map<String,Object> body = new HashMap<>();
+      Map<String,String> address_values = new HashMap<>();
+      address_values.put("country", "Portugal");
+      address_values.put("zipcode", "6120-443");
+      address_values.put("city", "Portugal");
+      address_values.put("address", "Rua da estia");
 
+      body.put("deliveryTimestamp", "10-05-2022 10:30");
+      body.put("shopAddress", address_values);
+      body.put("clientName", "Alexandre Serras");
+      body.put("clientPhoneNumber", "964546324");
+      body.put("address", address_values);
+
+      Map<String,Double> map=new HashMap<>();
+      map.put("lat", 5.0);
+      map.put("lon", -5.0);
+
+      when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
+      when(busService.getBusinessById(anyLong())).thenReturn(Optional.empty());
+      when(nominatiumService.getAddress("Rua da estia","Portugal","6120-443","Portugal")).thenReturn(new HashMap<>());
+
+      when(deliveryService.save(any())).thenReturn(new Delivery());
+
+      RestAssuredMockMvc.given().body(body)
+          .contentType("application/json")
+          .when()
+          .post("/delivery")
+          .then()
+          .statusCode(404);
+}
 
   @Test
-    void whenGetDeliveryByInvalidIdDelivery_ThenReturnNotFoundDelivery() throws IOException, InterruptedException, ParseException {
+  void whenCreateDeliveryInValidShop_ThenReturnDelivery() throws IOException, InterruptedException, ParseException {
+      Map<String,Object> body = new HashMap<>();
+      Map<String,String> address_values = new HashMap<>();
+      address_values.put("country", "Portugal");
+      address_values.put("zipcode", "6120-443");
+      address_values.put("city", "Portugal");
+      address_values.put("address", "Rua da estia");
+
+      body.put("deliveryTimestamp", "10-05-2022 10:30");
+      body.put("shopAddress", address_values);
+      body.put("clientName", "Alexandre Serras");
+      body.put("clientPhoneNumber", "964546324");
+      body.put("address", address_values);
+
+      Map<String,Double> map=new HashMap<>();
+      map.put("lat", 5.0);
+      map.put("lon", -5.0);
+
+      when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
+      when(busService.getBusinessById(anyLong())).thenReturn(Optional.of(new Business()));
+      when(nominatiumService.getAddress("Rua da estia","Portugal","6120-443","Portugal")).thenReturn(new HashMap<>());
+
+      when(deliveryService.save(any())).thenReturn(new Delivery());
+
+      RestAssuredMockMvc.given().body(body)
+          .contentType("application/json")
+          .when()
+          .post("/delivery")
+          .then()
+          .statusCode(404);
+    }
+
+
+    @Test
+    void whenCreateDelivery_ThenReturnDelivery() throws IOException, InterruptedException, ParseException {
+        Map<String,Object> body = new HashMap<>();
+        Map<String,String> address_values = new HashMap<>();
+        address_values.put("country", "Portugal");
+        address_values.put("zipcode", "6120-443");
+        address_values.put("city", "Portugal");
+        address_values.put("address", "Rua da estia");
+
+        body.put("deliveryTimestamp", "10-05-2022 10:30");
+        body.put("shopAddress", address_values);
+        body.put("clientName", "Alexandre Serras");
+        body.put("clientPhoneNumber", "964546324");
+        body.put("address", address_values);
+
+        Map<String,Double> map=new HashMap<>();
+        map.put("lat", 5.0);
+        map.put("lon", -5.0);
+
+        when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
+        when(busService.getBusinessById(anyLong())).thenReturn(Optional.of(new Business()));
+        when(nominatiumService.getAddress("Rua da estia","Portugal","6120-443","Portugal")).thenReturn(map);
+        
+        when(shopService.save(any())).thenReturn(new Shop());
+        when(deliveryService.save(any())).thenReturn(new Delivery());
+
+        RestAssuredMockMvc.given().body(body)
+            .contentType("application/json")
+            .when()
+            .post("/delivery")
+            .then()
+            .statusCode(201);
+        }
+        @Test
+        void whenCreateDeliveryInvalidAddressForDelivery_ThenReturnDelivery() throws IOException, InterruptedException, ParseException {
+            Map<String,Object> body = new HashMap<>();
+            Map<String,String> address_values1 = new HashMap<>();
+            address_values1.put("country", "Portugal");
+            address_values1.put("zipcode", "6120-443");
+            address_values1.put("city", "Portugalaaaa");
+            address_values1.put("address", "Rua da estia");
+
+            Map<String,String> address_values = new HashMap<>();
+            address_values.put("country", "Portugal");
+            address_values.put("zipcode", "6120-443");
+            address_values.put("city", "Portugal");
+            address_values.put("address", "Rua da estia");
+    
+            body.put("deliveryTimestamp", "10-05-2022 10:30");
+            body.put("shopAddress", address_values);
+            body.put("clientName", "Alexandre Serras");
+            body.put("clientPhoneNumber", "964546324");
+            body.put("address", address_values1);
+    
+            Map<String,Double> map=new HashMap<>();
+            map.put("lat", 5.0);
+            map.put("lon", -5.0);
+    
+            when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
+            when(busService.getBusinessById(anyLong())).thenReturn(Optional.of(new Business()));
+            when(nominatiumService.getAddress("Rua da estia","Portugal","6120-443","Portugal")).thenReturn(map);
+            
+            when(shopService.save(any())).thenReturn(new Shop());
+            when(deliveryService.save(any())).thenReturn(new Delivery());
+    
+            RestAssuredMockMvc.given().body(body)
+                .contentType("application/json")
+                .when()
+                .post("/delivery")
+                .then()
+                .statusCode(404);
+    }
+    
+
+  @Test
+    void whenGetDeliveryByInvalidUserDelivery_ThenReturnNotFoundDelivery() throws IOException, InterruptedException, ParseException {
     
         when(deliveryService.getDeliveryById(anyLong())).thenReturn(Optional.empty());
         RestAssuredMockMvc.given()
@@ -302,10 +427,24 @@ public class DeliveryControllerMockMvcTest {
             .statusCode(404);
   }
 
+  @Test
+    void whenGetDeliveryByInvalidIdDelivery_ThenReturnNotFoundDelivery() throws IOException, InterruptedException, ParseException {
+        when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
+
+        when(deliveryService.getDeliveryById(anyLong())).thenReturn(Optional.empty());
+        RestAssuredMockMvc.given()
+            .contentType("application/json")
+            .when()
+            .get("/delivery/{id}",1)
+            .then()
+            .statusCode(404);
+  }
   
   @Test
   void whenGetDeliveryByIdDelivery_ThenReturnDelivery() throws IOException, InterruptedException, ParseException {
-      when(deliveryService.getDeliveryById(anyLong())).thenReturn(Optional.of(new Delivery()));
+    when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
+  
+    when(deliveryService.getDeliveryById(anyLong())).thenReturn(Optional.of(new Delivery()));
       RestAssuredMockMvc.given()
           .contentType("application/json")
           .when()
@@ -316,7 +455,7 @@ public class DeliveryControllerMockMvcTest {
    
 
   @Test
-    void whenDeleteDeliveryByInvalidIdDelivery_ThenReturnNotFoundDelivery() throws IOException, InterruptedException, ParseException {
+    void whenDeleteDeliveryByInvalidUserIdDelivery_ThenReturnNotFoundDelivery() throws IOException, InterruptedException, ParseException {
     
         when(deliveryService.getDeliveryById(anyLong())).thenReturn(Optional.empty());
         RestAssuredMockMvc.given()
@@ -328,8 +467,23 @@ public class DeliveryControllerMockMvcTest {
   }
 
   @Test
+    void whenDeleteDeliveryByInvalidIdDelivery_ThenReturnNotFoundDelivery() throws IOException, InterruptedException, ParseException {
+        when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
+        when(deliveryService.getDeliveryById(anyLong())).thenReturn(Optional.empty());
+        RestAssuredMockMvc.given()
+            .contentType("application/json")
+            .when()
+            .delete("/delivery/{id}",1)
+            .then()
+            .statusCode(404);
+  }
+
+
+  @Test
   void whenDeleteDeliveryByIdDelivery_ThenReturnDelivery() throws IOException, InterruptedException, ParseException {
-      when(deliveryService.getDeliveryById(anyLong())).thenReturn(Optional.of(new Delivery()));
+    when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
+      
+    when(deliveryService.getDeliveryById(anyLong())).thenReturn(Optional.of(new Delivery()));
       RestAssuredMockMvc.given()
           .contentType("application/json")
           .when()
@@ -339,6 +493,8 @@ public class DeliveryControllerMockMvcTest {
     }
     @Test
     void whenDeleteDeliveryByIdDeliveryWithInvalidState_ThenReturnForbidden() throws IOException, InterruptedException, ParseException {
+        when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
+       
         Delivery d = new Delivery();
         d.setStatus(DeliveryStatusEnum.COLLECTING);
         when(deliveryService.getDeliveryById(anyLong())).thenReturn(Optional.of(d));
