@@ -1,7 +1,9 @@
 package com.tqs.project.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,9 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tqs.project.dto.CourierDto;
+import com.tqs.project.model.Business;
+import com.tqs.project.model.BusinessCourierInteractions;
 import com.tqs.project.model.Courier;
 import com.tqs.project.model.Delivery;
 import com.tqs.project.model.User;
+import com.tqs.project.service.BusinessCourierInteractionsService;
+import com.tqs.project.service.BusinessService;
 import com.tqs.project.service.CourierService;
 import com.tqs.project.service.DeliveryService;
 import com.tqs.project.service.UserService;
@@ -37,8 +43,12 @@ public class CourierController {
 
   @Autowired
   private DeliveryService deliveryService;
+  
+  @Autowired
+  private BusinessService businessService;
 
-
+  @Autowired
+  private BusinessCourierInteractionsService businessCourierInteractionsService;
 
   @PostMapping("")
   public ResponseEntity<Courier> register(@RequestBody CourierDto courier) {
@@ -55,6 +65,65 @@ public class CourierController {
     if (!user_opt.isPresent())  return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     List<Courier> ret = service.getAllCouriers();
     return new ResponseEntity<>(ret, HttpStatus.OK);
+  }
+
+  @PostMapping("{id}/accept")
+  public ResponseEntity<BusinessCourierInteractions> acceptCourier(@PathVariable(name = "id") int courierId) {
+
+    Optional<User> user = userService.getAuthenticatedUser();
+    if (user.isEmpty())
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+    Optional<Business> business = businessService.getBusinessById(user.get().getId());
+    if (business.isEmpty())
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+    Optional<Courier> courier = service.getCourierById(courierId);
+    if (courier.isEmpty())
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+    Optional<BusinessCourierInteractions> interaction = businessCourierInteractionsService.accept(business.get(),
+        courier.get());
+    if (interaction.isEmpty())
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+    return ResponseEntity.status(HttpStatus.OK).body(interaction.get());
+
+  }
+
+  @PostMapping("{id}/block")
+  public ResponseEntity<BusinessCourierInteractions> blockCourier(@PathVariable(name = "id") int courierId) {
+
+    Optional<User> user = userService.getAuthenticatedUser();
+    if (user.isEmpty()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+    Optional<Business> business = businessService.getBusinessById(user.get().getId());
+    if (business.isEmpty()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+    Optional<Courier> courier = service.getCourierById(courierId);
+    if (courier.isEmpty()) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+    Optional<BusinessCourierInteractions> interaction = businessCourierInteractionsService.block(business.get(), courier.get());
+    if (interaction.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+    return ResponseEntity.status(HttpStatus.OK).body(interaction.get());
+
+  }
+
+  @GetMapping("active")
+  public ResponseEntity<List<Map<String, Object>>> getAllActive() {
+    
+    Optional<User> user = userService.getAuthenticatedUser();
+    if (user.isEmpty()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+    Optional<Business> business = businessService.getBusinessById(user.get().getId());
+    if (business.isEmpty()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    
+    List<BusinessCourierInteractions> activeInteractions = businessCourierInteractionsService.getAllActive(business.get());
+    List<Map<String, Object>> result = activeInteractions.stream().map(interaction -> Map.of("business", interaction.getBusiness().getUser().getEmail(), "event", Map.of("id", interaction.getEvent().ordinal(), "name", interaction.getEvent().name()), "timestamp", interaction.getTimestamp())).collect(Collectors.toList());
+
+    return ResponseEntity.status(HttpStatus.OK).body(result);
+
   }
   
   @GetMapping("/{id}")
