@@ -61,6 +61,19 @@ public class BusinessCourierInteractionsService {
         return result;
     }
 
+    public List<BusinessCourierInteractions> getAllApplied(Business business) {
+        List<BusinessCourierInteractions> interactions = rep.findDistinctCourierByBusinessAndEventOrderByTimestampDesc(business, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        List<BusinessCourierInteractions> result = new ArrayList<>();
+
+        for (BusinessCourierInteractions interaction : interactions) {
+            Optional<BusinessCourierInteractions> lastInteraction = getLastInteraction(interaction.getCourier(), business);
+            if (lastInteraction.isPresent() && lastInteraction.get().getId() == interaction.getId())
+                result.add(interaction);
+        }
+
+        return result;
+    }
+
     public Optional<BusinessCourierInteractions> apply(Business business, Courier courier) {
         Optional<BusinessCourierInteractions> lastInteraction = getLastInteraction(courier, business);
         if (lastInteraction.isPresent() && lastInteraction.get().getEvent() == BusinessCourierInteractionsEventTypeEnum.BLOCK)

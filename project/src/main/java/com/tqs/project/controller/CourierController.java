@@ -110,6 +110,21 @@ public class CourierController {
 
   }
 
+  @GetMapping("applied")
+  public ResponseEntity<List<Map<String, Object>>> getAllApplied() {
+    
+    Optional<User> user = userService.getAuthenticatedUser();
+    if (user.isEmpty()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+    Optional<Business> business = businessService.getBusinessById(user.get().getId());
+    if (business.isEmpty()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    
+    List<BusinessCourierInteractions> appliedInteractions = businessCourierInteractionsService.getAllApplied(business.get());
+    List<Map<String, Object>> result = appliedInteractions.stream().map(interaction -> Map.of("business", interaction.getBusiness().getUser().getEmail(), "event", Map.of("id", interaction.getEvent().ordinal(), "name", interaction.getEvent().name()), "timestamp", interaction.getTimestamp())).collect(Collectors.toList());
+
+    return ResponseEntity.status(HttpStatus.OK).body(result);
+
+  }
   @GetMapping("active")
   public ResponseEntity<List<Map<String, Object>>> getAllActive() {
     

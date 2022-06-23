@@ -476,5 +476,45 @@ class CourierControllerMockMvcTest {
 
   }
 
+  @Test
+  void givenNoLogin_whenGetAppliedCouriers_returnStatusUnauthorized() {
+    when(userService.getAuthenticatedUser()).thenReturn(Optional.empty());
+
+    RestAssuredMockMvc.given()
+        .contentType("application/json")
+        .when()
+        .get("/couriers/applied")
+        .then()
+        .statusCode(HttpStatus.UNAUTHORIZED.value());
+
+  }
+
+  @Test
+  void givenLoginAsCourier_whenGetAppliedCouriers_returnStatusUnauthorized() {
+    when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
+    when(businessService.getBusinessById(0)).thenReturn(Optional.empty());
+
+    RestAssuredMockMvc.given()
+        .contentType("application/json")
+        .when()
+        .get("/couriers/applied")
+        .then()
+        .statusCode(HttpStatus.UNAUTHORIZED.value());
+
+  }
+
+  @Test
+  void givenLoginAsBusiness_whenGetAppliedCouriers_returnStatusOk() {
+    when(userService.getAuthenticatedUser()).thenReturn(Optional.of(new User()));
+    when(businessService.getBusinessById(0)).thenReturn(Optional.of(new Business()));
+
+    RestAssuredMockMvc.given()
+        .contentType("application/json")
+        .when()
+        .get("/couriers/applied")
+        .then()
+        .statusCode(HttpStatus.OK.value());
+
+  }
 
 } 
