@@ -1,34 +1,37 @@
 package com.tqs.project.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import com.tqs.project.Model.BusinessCourierInteractions;
-import com.tqs.project.Model.BusinessCourierInteractionsEventType;
-import com.tqs.project.Model.BusinessCourierInteractionsEventTypeEnum;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
 
 public class BusinessCourierInteractionsEventTypeTest {
 
     @Test
-    void testWhenCreateValidBusinessCourierInteractionsEventTypeThenReturnBusinessCourierInteractionsEventType() {
+    void whenCreateValidBusinessCourierInteractionsEventTypeWithSetters_thenReturnBusinessCourierInteractionsEventType() {
 
         BusinessCourierInteractionsEventType b = new BusinessCourierInteractionsEventType();
-        BusinessCourierInteractions bus= new BusinessCourierInteractions();
-        bus.setEvent(b);
-        BusinessCourierInteractions bus1= new BusinessCourierInteractions();
-        Set<BusinessCourierInteractions> set= new  HashSet<>();
-        bus1.setEvent(b);
-        set.add(bus1);
-        set.add(bus);
+
+        b.setId(1);
         b.setDescription(BusinessCourierInteractionsEventTypeEnum.BLOCK);
 
-        assertEquals(b, bus1.getEvent());
-        assertEquals(b.getDescription().toString(), bus.getEvent().getDescription().toString());
+        assertEquals(1, b.getId());
+        assertEquals(BusinessCourierInteractionsEventTypeEnum.BLOCK, b.getDescription());
 
+    }
 
+    @Test
+    void whenCreateValidBusinessCourierInteractionsEventTypeWithConstructor_thenReturnBusinessCourierInteractionsEventType() {
+
+        BusinessCourierInteractionsEventType b = new BusinessCourierInteractionsEventType(BusinessCourierInteractionsEventTypeEnum.BLOCK);
+
+        assertEquals(0, b.getId());
+        assertEquals(BusinessCourierInteractionsEventTypeEnum.BLOCK, b.getDescription());
+
+    }
+
+    @Test
+    void whenCallingToString_thenReturnString() {
+        assertNotEquals(null, new BusinessCourierInteractionsEventType().toString());
     }
 }

@@ -1,22 +1,17 @@
 package com.tqs.project.repository;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.PersistenceException;
 import javax.validation.ConstraintViolationException;
 
-import com.tqs.project.Exception.UserAlreadyAssignedException;
-import com.tqs.project.Model.Business;
-import com.tqs.project.Model.BusinessCourierInteractions;
-import com.tqs.project.Model.BusinessCourierInteractionsEventType;
-import com.tqs.project.Model.BusinessCourierInteractionsEventTypeEnum;
-import com.tqs.project.Model.Courier;
-import com.tqs.project.Model.User;
-import com.tqs.project.Repository.BusinessCourierInteractionsEventTypeRepository;
-import com.tqs.project.Repository.BusinessCourierInteractionsRepository;
-import com.tqs.project.Repository.BusinessRepository;
-import com.tqs.project.Repository.CourierRepository;
-import com.tqs.project.Repository.UserRepository;
+import com.tqs.project.model.Business;
+import com.tqs.project.model.BusinessCourierInteractions;
+import com.tqs.project.model.BusinessCourierInteractionsEventTypeEnum;
+import com.tqs.project.model.Courier;
+import com.tqs.project.model.User;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 
@@ -37,20 +32,13 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class BusinessCourierInteractionsRepositoryTest {
     
     @Container
-    public static MySQLContainer container = new MySQLContainer()
-        .withUsername("user")
-        .withPassword("user")
-        .withDatabaseName("tqs_41");
+    public static MySQLContainer<?> container = new MySQLContainer<>("mysql");
 
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", container::getJdbcUrl);
         registry.add("spring.datasource.password", container::getPassword);
         registry.add("spring.datasource.username", container::getUsername);
-    }
-    @Test
-    void contextLoads(){
-        System.out.println("Context Loads!");
     }
 
     @Autowired
@@ -64,31 +52,28 @@ public class BusinessCourierInteractionsRepositoryTest {
 
     @Autowired
     private CourierRepository repCour;
-    @Autowired
-    private BusinessCourierInteractionsEventTypeRepository repBusinessEvent;
+    
     @Autowired
     private TestEntityManager entityManager;
     
     @Test
-    void testWhenCreateBusinessCourierInteractionsAndFindById_thenReturnSameBusinessCourierInteractions() throws UserAlreadyAssignedException {
+    void testWhenCreateBusinessCourierInteractionsAndFindById_thenReturnSameBusinessCourierInteractions() {
         BusinessCourierInteractions x = new BusinessCourierInteractions();
         Courier c = new Courier();
         c.setName("alex");
         x.setCourier(c);
         User user = new User();
         user.setPassword("xxxx");
-        user.setUsername("username");
-        user.setCourier(null);
+        user.setEmail("username");
         Business b = new Business();
-        BusinessCourierInteractionsEventType bus= new BusinessCourierInteractionsEventType(BusinessCourierInteractionsEventTypeEnum.ACCEPT);
-        x.setEvent(bus);
+        BusinessCourierInteractionsEventTypeEnum event = BusinessCourierInteractionsEventTypeEnum.ACCEPT;        
+        x.setEvent(event);
         b.setUser(user);
         x.setBusiness(b);
         repUser.saveAndFlush(user);
         c.setUser(user);
         repCour.saveAndFlush(c);
         repBusiness.saveAndFlush(b);
-        repBusinessEvent.saveAndFlush(bus);
         rep.saveAndFlush(x);
         Optional<BusinessCourierInteractions> res = rep.findById(x.getId());
         System.out.println(res.get().getTimestamp());
@@ -106,7 +91,7 @@ public class BusinessCourierInteractionsRepositoryTest {
      */
     
     @Test
-    void testGivenBusinessCourierInteractionsAndFindByAll_thenReturnSameBusinessCourierInteractions() throws UserAlreadyAssignedException {
+    void testGivenBusinessCourierInteractionsAndFindByAll_thenReturnSameBusinessCourierInteractions() {
       
 
         BusinessCourierInteractions x = new BusinessCourierInteractions();
@@ -120,18 +105,16 @@ public class BusinessCourierInteractionsRepositoryTest {
         c1.setName("serras");
         User user1 = new User();
         user1.setPassword("xxxx");
-        user1.setUsername("aaaaa");
+        user1.setEmail("aaaaa");
         User user = new User();
         user.setPassword("xxxx");
-        user.setUsername("username");
-        user.setCourier(null);
+        user.setEmail("username");
         Business b = new Business();
         Business b1 = new Business();
 
-        BusinessCourierInteractionsEventType bus= new BusinessCourierInteractionsEventType(BusinessCourierInteractionsEventTypeEnum.ACCEPT);
-        x.setEvent(bus);
-        x2.setEvent(bus);
-
+        BusinessCourierInteractionsEventTypeEnum event = BusinessCourierInteractionsEventTypeEnum.ACCEPT;        
+        x.setEvent(event);
+        x2.setEvent(event);
 
         b.setUser(user);
         b1.setUser(user1);
@@ -149,7 +132,6 @@ public class BusinessCourierInteractionsRepositoryTest {
 
         repBusiness.saveAndFlush(b);
         repBusiness.saveAndFlush(b1);
-        repBusinessEvent.saveAndFlush(bus);
         rep.saveAndFlush(x);
         rep.saveAndFlush(x2);
 
@@ -181,11 +163,182 @@ public class BusinessCourierInteractionsRepositoryTest {
     @Test
     void testWhenCreateBusinessCourierInteractions_thenReturnException() {
         BusinessCourierInteractions  x = new BusinessCourierInteractions();
-        assertThrows(PersistenceException.class, () -> {
+        assertThrows(ConstraintViolationException.class, () -> {
             entityManager.persistAndFlush(x);
         });
     }
-    
-    
+
+    @Test
+    void whenFindLast_thenReturnOnlyLastAsOptional() {
+        User userCourier = new User("email", "password");
+        User userBusiness = new User("email2", "password");
+        User userBusiness2 = new User("email3", "password");
+
+        repUser.saveAllAndFlush(Arrays.asList(userCourier, userBusiness, userBusiness2));
+
+        Courier courier = new Courier(userCourier, "name", "photo", LocalDate.of(2021, 10, 12));
+        Business business = new Business(userBusiness);
+        Business business2 = new Business(userBusiness2);
+
+        repCour.saveAndFlush(courier);
+        repBusiness.saveAndFlush(business);
+        repBusiness.saveAndFlush(business2);
+
+        Optional<BusinessCourierInteractions> last = rep.findFirstByBusinessAndCourierOrderByTimestampDesc(business,
+                courier);
+        assertThat(last).isNotPresent();
+
+        BusinessCourierInteractions it1 = new BusinessCourierInteractions(business, courier,
+                BusinessCourierInteractionsEventTypeEnum.APPLY);
+        rep.saveAndFlush(it1);
+
+        last = rep.findFirstByBusinessAndCourierOrderByTimestampDesc(business, courier);
+        assertThat(last).isPresent();
+        assertThat(last.get().getEvent()).isEqualTo(BusinessCourierInteractionsEventTypeEnum.APPLY);
+
+        BusinessCourierInteractions it2 = new BusinessCourierInteractions(business, courier,
+                BusinessCourierInteractionsEventTypeEnum.ACCEPT);
+        rep.saveAndFlush(it2);
+
+        last = rep.findFirstByBusinessAndCourierOrderByTimestampDesc(business, courier);
+        assertThat(last).isPresent();
+        assertThat(last.get().getEvent()).isEqualTo(BusinessCourierInteractionsEventTypeEnum.ACCEPT);
+
+        last = rep.findFirstByBusinessAndCourierOrderByTimestampDesc(business2, courier);
+        assertThat(last).isNotPresent();
+    }
+
+    @Test
+    void whenFindByBusinessAndCourier_thenReturnOnlyInteractionsBetweenTheTwo() {
+        User userCourier = new User("email", "password");
+        User userBusiness = new User("email2", "password");
+        User userBusiness2 = new User("email3", "password");
+
+        repUser.saveAllAndFlush(Arrays.asList(userCourier, userBusiness, userBusiness2));
+
+        Courier courier = new Courier(userCourier, "name", "photo", LocalDate.of(2021, 10, 12));
+        Business business = new Business(userBusiness);
+        Business business2 = new Business(userBusiness2);
+
+        repCour.saveAndFlush(courier);
+        repBusiness.saveAndFlush(business);
+        repBusiness.saveAndFlush(business2);
+
+        List<BusinessCourierInteractions> interactions = rep.findByBusinessAndCourierOrderByTimestampDesc(business, courier);
+        assertThat(interactions).hasSize(0);
+
+        BusinessCourierInteractions it1 = new BusinessCourierInteractions(business, courier, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        rep.saveAndFlush(it1);
+
+        interactions = rep.findByBusinessAndCourierOrderByTimestampDesc(business, courier);
+        assertThat(interactions).hasSize(1);
+
+        BusinessCourierInteractions it2 = new BusinessCourierInteractions(business, courier, BusinessCourierInteractionsEventTypeEnum.ACCEPT);
+        rep.saveAndFlush(it2);
+
+        interactions = rep.findByBusinessAndCourierOrderByTimestampDesc(business, courier);
+        assertThat(interactions).hasSize(2);
+
+        interactions = rep.findByBusinessAndCourierOrderByTimestampDesc(business2, courier);
+        assertThat(interactions).hasSize(0);
+    } 
+
+    @Test
+    void whenFindBusinessesByCourierAndEvent_thenReturnOnlyInteractionsBetweenTheTwo() {
+        User userCourier = new User("email", "password");
+        User userCourier2 = new User("email2", "password");
+        User userBusiness = new User("email3", "password");
+        User userBusiness2 = new User("email4", "password");
+
+        repUser.saveAllAndFlush(Arrays.asList(userCourier, userCourier2, userBusiness, userBusiness2));
+
+        Courier courier = new Courier(userCourier, "name", "photo", LocalDate.of(2021, 10, 12));
+        Courier courier2 = new Courier(userCourier2, "name", "photo", LocalDate.of(2021, 10, 12));
+        Business business = new Business(userBusiness);
+        Business business2 = new Business(userBusiness2);
+
+        repCour.saveAndFlush(courier);
+        repCour.saveAndFlush(courier2);
+        repBusiness.saveAndFlush(business);
+        repBusiness.saveAndFlush(business2);
+
+        List<BusinessCourierInteractions> interactions = rep.findDistinctBusinessByCourierAndEventOrderByTimestampDesc(courier, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        assertThat(interactions).hasSize(0);
+
+        BusinessCourierInteractions it1 = new BusinessCourierInteractions(business, courier, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        rep.saveAndFlush(it1);
+
+        interactions = rep.findDistinctBusinessByCourierAndEventOrderByTimestampDesc(courier, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        assertThat(interactions).hasSize(1);
+
+        BusinessCourierInteractions it2 = new BusinessCourierInteractions(business, courier, BusinessCourierInteractionsEventTypeEnum.ACCEPT);
+        rep.saveAndFlush(it2);
+
+        interactions = rep.findDistinctBusinessByCourierAndEventOrderByTimestampDesc(courier, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        assertThat(interactions).hasSize(1);
+
+        BusinessCourierInteractions it3 = new BusinessCourierInteractions(business, courier, BusinessCourierInteractionsEventTypeEnum.ACCEPT);
+        rep.saveAndFlush(it3);
+
+        interactions = rep.findDistinctBusinessByCourierAndEventOrderByTimestampDesc(courier, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        assertThat(interactions).hasSize(1);
+
+        interactions = rep.findDistinctBusinessByCourierAndEventOrderByTimestampDesc(courier2, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        assertThat(interactions).hasSize(0);
+
+
+        BusinessCourierInteractions it4 = new BusinessCourierInteractions(business2, courier, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        rep.saveAndFlush(it4);
+
+        interactions = rep.findDistinctBusinessByCourierAndEventOrderByTimestampDesc(courier, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        assertThat(interactions).hasSize(2);
+    } 
+
+    @Test
+    void whenFindCourierByBusinessAndEvent_thenReturnOnlyInteractionsBetweenTheTwo() {
+        User userCourier = new User("email", "password");
+        User userBusiness = new User("email3", "password");
+        User userBusiness2 = new User("email4", "password");
+
+        repUser.saveAllAndFlush(Arrays.asList(userCourier, userBusiness, userBusiness2));
+
+        Courier courier = new Courier(userCourier, "name", "photo", LocalDate.of(2021, 10, 12));
+        Business business = new Business(userBusiness);
+        Business business2 = new Business(userBusiness2);
+
+        repCour.saveAndFlush(courier);
+        repBusiness.saveAndFlush(business);
+        repBusiness.saveAndFlush(business2);
+
+        List<BusinessCourierInteractions> interactions = rep.findDistinctCourierByBusinessAndEventOrderByTimestampDesc(business, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        assertThat(interactions).hasSize(0);
+
+        BusinessCourierInteractions it1 = new BusinessCourierInteractions(business, courier, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        rep.saveAndFlush(it1);
+
+        interactions = rep.findDistinctCourierByBusinessAndEventOrderByTimestampDesc(business, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        assertThat(interactions).hasSize(1);
+
+        BusinessCourierInteractions it2 = new BusinessCourierInteractions(business, courier, BusinessCourierInteractionsEventTypeEnum.ACCEPT);
+        rep.saveAndFlush(it2);
+
+        interactions = rep.findDistinctCourierByBusinessAndEventOrderByTimestampDesc(business, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        assertThat(interactions).hasSize(1);
+
+        BusinessCourierInteractions it3 = new BusinessCourierInteractions(business, courier, BusinessCourierInteractionsEventTypeEnum.ACCEPT);
+        rep.saveAndFlush(it3);
+
+        interactions = rep.findDistinctCourierByBusinessAndEventOrderByTimestampDesc(business, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        assertThat(interactions).hasSize(1);
+
+        interactions = rep.findDistinctCourierByBusinessAndEventOrderByTimestampDesc(business2, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        assertThat(interactions).hasSize(0);
+
+        BusinessCourierInteractions it4 = new BusinessCourierInteractions(business2, courier, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        rep.saveAndFlush(it4);
+
+        interactions = rep.findDistinctCourierByBusinessAndEventOrderByTimestampDesc(business2, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        assertThat(interactions).hasSize(1);
+    } 
 
 }

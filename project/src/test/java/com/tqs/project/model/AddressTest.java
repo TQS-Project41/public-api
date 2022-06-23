@@ -2,9 +2,9 @@ package com.tqs.project.model;
 
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import com.tqs.project.Exception.BadLocationException;
-import com.tqs.project.Model.Address;
+import com.tqs.project.exception.BadLocationException;
 
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +27,7 @@ public class AddressTest{
     @Test
     void testWhenCreateInvalidLatitudeThenReturnBadLocationException() throws BadLocationException{
         assertThrows(BadLocationException.class, () -> {
-            Address x = new Address(-150,-180);
+            new Address(-150,-180);
         });
 
     }
@@ -35,24 +35,67 @@ public class AddressTest{
     @Test
     void testWhenCreateInvalidLongitudeThenReturnBadLocationException() throws BadLocationException{
         assertThrows(BadLocationException.class, () -> {
-            Address x = new Address(0,-280);
+            new Address(0,-280);
         });
 
     }
 
     @Test
-    void testWhenCreateInvalidLongitudeAndLatitudeThenReturnBadLocationException() throws BadLocationException{
+    void testWhenCreateInvalidLongitudeAndLatitudeThenReturnBadLocationException() throws BadLocationException {
         assertThrows(BadLocationException.class, () -> {
-            Address x = new Address(-150,-280);
+            new Address(-150, -280);
         });
 
     }
 
+    @Test
+    void testWhenCreateInvalidLongitudeAndLatitude_thenReturnBadLocationException() throws BadLocationException {
+        assertThrows(BadLocationException.class, () -> {
+            new Address(-150, -280);
+        });
 
+    }
 
     @Test
-    void testWhenWeHaveAddressThenCalculateGetDistance() {
-        //TEST A FAZER
+    void testWhenCreateInvalidLatitudeSetterThenReturnBadLocationException() throws BadLocationException {
+        assertThrows(BadLocationException.class, () -> {
+            new Address().setLatitude(-150);
+        });
+
+    }
+
+    @Test
+    void testWhenCreateInvalidPositiveLatitudeSetterThenReturnBadLocationException() throws BadLocationException {
+        assertThrows(BadLocationException.class, () -> {
+            new Address().setLatitude(150);
+        });
+
+    }
+
+    @Test
+    void testWhenCreateInvalidLongitudeSetterThenReturnBadLocationException() throws BadLocationException {
+        assertThrows(BadLocationException.class, () -> {
+            new Address().setLongitude(-280);
+        });
+
+    }
+
+    @Test
+    void testWhenCreateInvalidPositiveLongitudeSetterThenReturnBadLocationException() throws BadLocationException {
+        assertThrows(BadLocationException.class, () -> {
+            new Address().setLongitude(280);
+        });
+
+    }
+
+    @Test
+    void whenCallingToString_thenReturnString() {
+        assertNotEquals(null, new Address().toString());
+    }
+
+    @Test
+    void whenGettingDistance_thenReturnNonNegativeNumber() {
+        assertEquals(0, new Address().getDistance(new Address()));
     }
 
 }

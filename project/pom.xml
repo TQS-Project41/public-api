@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.7</version>
+		<version>2.7.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.tqs</groupId>
@@ -50,6 +50,13 @@
 		</dependencies>
 	  </dependencyManagement>
 	<dependencies>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -124,6 +131,17 @@
 		<version>3.4.0</version>
 		<scope>test</scope>
 	</dependency>
+	
+
+	<dependency>
+		<groupId>org.flywaydb</groupId>
+		<artifactId>flyway-core</artifactId>
+	</dependency>
+
+	<dependency>
+		<groupId>org.flywaydb</groupId>
+		<artifactId>flyway-mysql</artifactId>
+	</dependency>
 
 	<dependency>
 		<groupId>org.seleniumhq.selenium</groupId>
@@ -145,13 +163,19 @@
 	<dependency>
 		<groupId>org.apache.httpcomponents</groupId>
 		<artifactId>httpclient</artifactId>
-		<version>4.5.10</version>
+		<version>4.5.13</version>
 	</dependency>
 	<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
 	<dependency>
 		<groupId>javax.validation</groupId>
 		<artifactId>validation-api</artifactId>
 		<version>1.1.0.Final</version>
+	</dependency>
+
+	<dependency>
+		<groupId>io.rest-assured</groupId>
+		<artifactId>spring-mock-mvc</artifactId>
+		<scope>test</scope>
 	</dependency>
 	
 		<dependency>
@@ -189,6 +213,11 @@
 			<artifactId>mysql</artifactId>
 			<version>1.17.2</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 	</dependencies>
 
