@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.6.7</version>
+		<version>2.7.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.tqs</groupId>
@@ -130,6 +130,17 @@
 		<artifactId>selenium-jupiter</artifactId>
 		<version>3.4.0</version>
 		<scope>test</scope>
+	</dependency>
+	
+
+	<dependency>
+		<groupId>org.flywaydb</groupId>
+		<artifactId>flyway-core</artifactId>
+	</dependency>
+
+	<dependency>
+		<groupId>org.flywaydb</groupId>
+		<artifactId>flyway-mysql</artifactId>
 	</dependency>
 
 	<dependency>
