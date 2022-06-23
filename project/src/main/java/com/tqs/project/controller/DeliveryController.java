@@ -72,6 +72,21 @@ public class DeliveryController {
         return Page.empty();
     }
 
+    @GetMapping("/courier/{id}")
+    public Page<Delivery> getDeliveriesByCourierAndBusiness(@PathVariable long id, Pageable pageable) { // id do courier
+        Optional<User> user_opt = userService.getAuthenticatedUser();
+        if (!user_opt.isPresent())  return Page.empty();
+        User user = user_opt.get();
+
+        Optional<Courier> couriers = courierService.getCourierById(id);
+        if (!couriers.isPresent())  return Page.empty();
+        
+        Optional<Business> bus = shopService.getShopByBusinessId(user.getId());
+        if (bus.isPresent())  return service.getAll(id, user.getId(), pageable);
+
+        return Page.empty();
+    }
+
     @GetMapping("/fee")
     public ResponseEntity<Map<String, Double>> deliveryFee() {
         Map<String,Double> ret = new HashMap<>();
