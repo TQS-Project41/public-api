@@ -159,6 +159,34 @@ class BusinessCourierInteractionsServiceTest {
     }
 
     @Test
+    void whenSearchAllAppliedByBusiness_thenReturnOnlyWhoApplied() {
+        Business b1 = new Business();
+
+        Courier c1 = new Courier();
+        Courier c2 = new Courier();
+
+        BusinessCourierInteractions it1 = new BusinessCourierInteractions(b1, c1, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        BusinessCourierInteractions it2 = new BusinessCourierInteractions(b1, c1, BusinessCourierInteractionsEventTypeEnum.BLOCK);
+        BusinessCourierInteractions it3 = new BusinessCourierInteractions(b1, c2, BusinessCourierInteractionsEventTypeEnum.APPLY);
+
+        it1.setId(1);
+        it2.setId(2);
+        it3.setId(3);
+
+        Mockito.when(rep.findDistinctCourierByBusinessAndEventOrderByTimestampDesc(b1, BusinessCourierInteractionsEventTypeEnum.APPLY)).thenReturn(Arrays.asList(it1, it3));
+        Mockito.when(rep.findFirstByBusinessAndCourierOrderByTimestampDesc(b1, c1)).thenReturn(Optional.of(it2));
+        Mockito.when(rep.findFirstByBusinessAndCourierOrderByTimestampDesc(b1, c2)).thenReturn(Optional.of(it3));
+
+        List<BusinessCourierInteractions> found = service.getAllApplied(b1);
+
+        assertThat(found).hasSize(1);
+
+        Mockito.verify(rep, VerificationModeFactory.times(1)).findDistinctCourierByBusinessAndEventOrderByTimestampDesc(b1, BusinessCourierInteractionsEventTypeEnum.APPLY);
+        Mockito.verify(rep, VerificationModeFactory.times(1)).findFirstByBusinessAndCourierOrderByTimestampDesc(b1, c1);
+        Mockito.verify(rep, VerificationModeFactory.times(1)).findFirstByBusinessAndCourierOrderByTimestampDesc(b1, c2);
+    }
+
+    @Test
     void givenACourierHasBeenBlocked_whenCourierTriesToApply_thenReturnsNotPresent() {
 
         BusinessCourierInteractions it = new BusinessCourierInteractions(null, null, BusinessCourierInteractionsEventTypeEnum.BLOCK);

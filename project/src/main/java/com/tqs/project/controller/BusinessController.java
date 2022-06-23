@@ -101,7 +101,7 @@ public class BusinessController {
     if (courier.isEmpty()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     
     List<BusinessCourierInteractions> activeInteractions = businessCourierInteractionsService.getAllActive(courier.get());
-    List<Map<String, Object>> result = activeInteractions.stream().map(interaction -> Map.of("business", interaction.getBusiness().getUser().getEmail(), "event", Map.of("id", interaction.getEvent().ordinal(), "name", interaction.getEvent().name()), "timestamp", interaction.getTimestamp())).collect(Collectors.toList());
+    List<Map<String, Object>> result = activeInteractions.stream().map(interaction -> Map.of("id", interaction.getBusiness().getId(), "business", interaction.getBusiness().getUser().getEmail(), "event", Map.of("id", interaction.getEvent().ordinal(), "name", interaction.getEvent().name()), "timestamp", interaction.getTimestamp())).collect(Collectors.toList());
 
     return ResponseEntity.status(HttpStatus.OK).body(result);
 
@@ -120,7 +120,7 @@ public class BusinessController {
 
     for (Business business : service.getAllBusinesss()) {
       Optional<BusinessCourierInteractions> lastInteraction = businessCourierInteractionsService.getLastInteraction(courier.get(), business);
-      result.add(Map.of("business", business.getUser().getEmail(), "event", Map.of("id", lastInteraction.isPresent() ? lastInteraction.get().getEvent().ordinal() : -1, "name", lastInteraction.isPresent() ? lastInteraction.get().getEvent().name() : "NONE"), "timestamp", lastInteraction.isPresent() ? lastInteraction.get().getTimestamp() : 0));
+      result.add(Map.of("id", business.getId(), "business", business.getUser().getEmail(), "event", Map.of("id", lastInteraction.isPresent() ? lastInteraction.get().getEvent().ordinal() : -1, "name", lastInteraction.isPresent() ? lastInteraction.get().getEvent().name() : "NONE"), "timestamp", lastInteraction.isPresent() ? lastInteraction.get().getTimestamp() : 0));
     }
 
     return ResponseEntity.status(HttpStatus.OK).body(result);
